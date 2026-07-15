@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./config.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>JJS — Encuentra un maestro ahora</title>
+<meta name="description" content="Publica tu trabajo y conecta con un maestro verificado de tu zona en minutos. Gasfitería, electricidad, pintura, cerrajería, carpintería y mecánica en Rancagua y alrededores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#004E98;--secondary:#3A6EA5;--background:#F8FAFC;--surface:#FFFFFF;--text:#1E293B;--success:#16A34A;--muted:#64748B;--border:#E4E5E7;--cta:#4169E1;--cta-hover:#2E4AB1}
+body{margin:0;background:#ffffff;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+button,input,textarea,select{font-family:Inter,system-ui,sans-serif}
+@keyframes jjsFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes jjsPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.8);opacity:0}}
+@keyframes jjsDot{0%,20%{opacity:0}40%,60%{opacity:1}80%,100%{opacity:0}}
+@keyframes jjsSpin{to{transform:rotate(360deg)}}
+@keyframes jjsPopIn{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+@media (max-width:768px){
+  .jjs-nav-auth-extra{display:none !important}
+  .jjs-chat-badge{display:none !important}
+  .jjs-chat-header{padding:10px 16px !important;gap:10px !important}
+}
+@media (max-width:480px){
+  .jjs-nav-auth{gap:6px !important}
+  .jjs-nav-cta{padding:8px 16px !important;font-size:13px !important}
+  .jjs-chat-header{padding:10px 12px !important;gap:8px !important}
+  .jjs-chat-input-wrap{padding:10px 12px !important}
+}
+</style>
+</helmet>
+
+<div style="font-family:Inter,system-ui,sans-serif;color:var(--text)">
+
+  <!-- NAVBAR mínima -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)">
+    <div style="max-width:720px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <button onClick="{{ irAHome }}" style="font-family:Manrope,sans-serif;font-weight:800;font-size:22px;color:var(--text);background:transparent;border:none;cursor:pointer;letter-spacing:-0.02em;padding:0">JJS<span style="color:var(--cta)">.</span></button>
+      <div class="jjs-nav-auth" style="display:flex;align-items:center;gap:16px">
+        <sc-if value="{{ usuarioLoggedIn }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ irAConversaciones }}" style="font-size:14px;font-weight:700;color:var(--text);background:transparent;border:none;cursor:pointer;padding:0" style-hover="color:var(--cta)">Mis chats</button>
+          <button onClick="{{ cerrarSesion }}" style="font-size:14px;font-weight:700;color:#94A3B8;background:transparent;border:none;cursor:pointer;padding:0" style-hover="color:#EF4444">Salir</button>
+        </sc-if>
+        <sc-if value="{{ usuarioNoLoggedIn }}" hint-placeholder-val="{{ true }}">
+          <button class="jjs-nav-auth-extra" onClick="{{ irAConversaciones }}" style="font-size:14px;font-weight:700;color:var(--text);background:transparent;border:none;cursor:pointer;padding:0" style-hover="color:var(--cta)">Mis chats</button>
+        </sc-if>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════ ENTRADA — elegir rol ═══════ -->
+  <sc-if value="{{ esEntrada }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--background)">
+    <div style="max-width:420px;width:100%;text-align:center">
+      <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,32px);letter-spacing:-0.02em;margin:0 0 8px">¿Qué necesitas hoy?</h1>
+      <p style="color:var(--muted);font-size:15.5px;margin:0 0 32px">Sin registro. Vas directo al grano.</p>
+      <div style="display:grid;gap:14px">
+        <button onClick="{{ irEntradaCliente }}" style="text-align:left;background:#fff;border:2px solid var(--border);border-radius:16px;padding:22px;cursor:pointer;transition:border-color .15s ease;width:100%" style-hover="border-color:var(--cta)">
+          <span style="font-size:26px;display:block;margin-bottom:8px">🔧</span>
+          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;display:block">Busco un maestro</span>
+          <span style="font-size:13.5px;color:var(--muted);display:block;margin-top:3px">Publica tu trabajo y conecta en minutos</span>
+        </button>
+        <button onClick="{{ irEntradaMaestro }}" style="text-align:left;background:#fff;border:2px solid var(--border);border-radius:16px;padding:22px;cursor:pointer;transition:border-color .15s ease;width:100%" style-hover="border-color:var(--cta)">
+          <span style="font-size:26px;display:block;margin-bottom:8px">👷</span>
+          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;display:block">Soy maestro</span>
+          <span style="font-size:13.5px;color:var(--muted);display:block;margin-top:3px">Recibe trabajos de tu zona y oficio</span>
+        </button>
+      </div>
+      <button onClick="{{ irAAuth }}" style="margin-top:24px;background:transparent;border:none;color:#94A3B8;font:600 13.5px Inter,sans-serif;cursor:pointer" style-hover="color:var(--muted)">¿Ya tienes cuenta? Inicia sesión</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ HOME CLIENTE — solo grid de rubros ═══════ -->
+  <sc-if value="{{ esHome }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);background:var(--background);padding:48px 20px 60px">
+    <div style="max-width:640px;margin:0 auto">
+      <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(24px,4vw,30px);letter-spacing:-0.02em;margin:0 0 24px;text-align:center">¿Qué necesitas arreglar?</h1>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+        <sc-for list="{{ oficiosGrid }}" as="of" hint-placeholder-count="6">
+          <button onClick="{{ of.ir }}" style="text-align:left;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:border-color .15s ease" style-hover="border-color:var(--cta)">
+            <span style="width:38px;height:38px;border-radius:10px;background:#E8EFFB;display:inline-flex;align-items:center;justify-content:center;color:var(--cta-hover);font-family:Manrope,sans-serif;font-weight:800;font-size:15px">{{ of.inicial }}</span>
+            <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:15px;display:block;margin-top:10px">{{ of.nombre }}</span>
+            <span style="font-size:12.5px;color:var(--muted);display:block;margin-top:2px">{{ of.ejemplos }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ COTIZAR — 3 pasos ═══════ -->
+  <sc-if value="{{ esCotizar }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);display:flex;flex-direction:column;background:var(--background)">
+    <sc-if value="{{ cotEnCurso }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#fff;border-bottom:1px solid var(--border)">
+        <div style="max-width:520px;margin:0 auto;padding:16px 20px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">
+            <span>Paso {{ cotPasoNum }} de 3</span><span>{{ cotPasoTitulo }}</span>
+          </div>
+          <div style="height:6px;border-radius:999px;background:var(--background);overflow:hidden"><div style="{{ cotProgressFill }}"></div></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <main style="flex:1;width:100%;max-width:520px;margin:0 auto;padding:36px 20px 80px">
+
+      <sc-if value="{{ cotEsPaso1 }}" hint-placeholder-val="{{ true }}">
+        <section>
+          <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(22px,4vw,28px);letter-spacing:-0.02em;margin:0 0 20px">{{ cotOficioLabel }}: ¿qué necesitas?</h1>
+          <textarea value="{{ cotDescripcion }}" onChange="{{ cotSetDescripcion }}" rows="4" placeholder="Ej: El calefón no enciende hace 2 días…" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:16px;font:400 15px/1.6 Inter,sans-serif;color:var(--text);background:#fff;outline:none;resize:vertical;margin-bottom:20px" style-focus="border-color:var(--cta)"></textarea>
+          <div style="font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:10px">¿Qué tan urgente es?</div>
+          <div style="display:grid;gap:10px">
+            <sc-for list="{{ cotUrgencias }}" as="u" hint-placeholder-count="3">
+              <button onClick="{{ u.pick }}" style="{{ u.cardStyle }}" style-hover="border-color:var(--cta)">
+                <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:15px;display:block">{{ u.titulo }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ cotEsPaso2 }}" hint-placeholder-val="{{ false }}">
+        <section>
+          <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(22px,4vw,28px);letter-spacing:-0.02em;margin:0 0 20px">¿Dónde es el trabajo?</h1>
+          <div style="display:grid;gap:14px">
+            <select value="{{ cotComuna }}" onChange="{{ cotSetComuna }}" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:500 15px Inter,sans-serif;color:var(--text);background:#fff;outline:none;cursor:pointer" style-focus="border-color:var(--cta)">
+              <option value="">Elige tu comuna</option>
+              <option value="Rancagua">Rancagua</option>
+              <option value="Machalí">Machalí</option>
+              <option value="Graneros">Graneros</option>
+              <option value="Olivar">Olivar</option>
+              <option value="Doñihue">Doñihue</option>
+            </select>
+            <input type="text" value="{{ cotDireccion }}" onChange="{{ cotSetDireccion }}" placeholder="Dirección o sector (opcional)" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;background:#fff;outline:none" style-focus="border-color:var(--cta)">
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ cotEsPaso3 }}" hint-placeholder-val="{{ false }}">
+        <section>
+          <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(22px,4vw,28px);letter-spacing:-0.02em;margin:0 0 8px">¿Cómo te contactamos?</h1>
+          <p style="color:var(--muted);font-size:14.5px;margin:0 0 20px">Solo el WhatsApp es obligatorio.</p>
+          <div style="display:grid;gap:14px">
+            <input type="tel" value="{{ cotWhatsapp }}" onChange="{{ cotSetWhatsapp }}" placeholder="WhatsApp (+56 9 …)" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;background:#fff;outline:none" style-focus="border-color:var(--cta)">
+            <input type="text" value="{{ cotNombre }}" onChange="{{ cotSetNombre }}" placeholder="Tu nombre (opcional)" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;background:#fff;outline:none" style-focus="border-color:var(--cta)">
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- BUSCANDO -->
+      <sc-if value="{{ cotBuscando }}" hint-placeholder-val="{{ false }}">
+        <section style="text-align:center;padding:56px 20px 40px">
+          <div style="position:relative;width:120px;height:120px;margin:0 auto 32px">
+            <div style="position:absolute;inset:0;border-radius:50%;background:#E8EFFB;animation:jjsPing 1.6s ease-out infinite"></div>
+            <div style="position:absolute;inset:0;border-radius:50%;background:#E8EFFB;animation:jjsPing 1.6s ease-out .8s infinite"></div>
+            <div style="position:relative;width:120px;height:120px;border-radius:50%;background:var(--cta);display:flex;align-items:center;justify-content:center;z-index:1;font-size:44px">🔧</div>
+          </div>
+          <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(20px,3vw,26px);letter-spacing:-0.02em;margin:0 0 10px">Buscando un maestro cerca de ti…</h2>
+          <p style="color:var(--muted);font-size:14.5px;margin:0 0 26px">{{ cotOficioLabel }} · {{ cotComuna }}</p>
+          <div style="display:flex;justify-content:center;gap:10px">
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--cta);display:inline-block;animation:jjsDot 1.4s ease-in-out infinite"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--cta);display:inline-block;animation:jjsDot 1.4s ease-in-out .2s infinite"></span>
+            <span style="width:10px;height:10px;border-radius:50%;background:var(--cta);display:inline-block;animation:jjsDot 1.4s ease-in-out .4s infinite"></span>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- ACEPTADO -->
+      <sc-if value="{{ cotAceptado }}" hint-placeholder-val="{{ false }}">
+        <section style="text-align:center;padding:40px 20px 40px">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--cta);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;animation:jjsPopIn .4s ease-out;margin-bottom:18px">✓</div>
+          <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(19px,3vw,24px);letter-spacing:-0.02em;margin:0 0 24px">¡{{ cotMaestro.nombre }} aceptó tu trabajo!</h2>
+
+          <div style="background:#fff;border:2px solid var(--cta);border-radius:18px;padding:20px;max-width:360px;margin:0 auto 24px;text-align:left">
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="width:56px;height:56px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:inline-flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif;font-weight:800;font-size:18px;flex:none">{{ cotMaestro.iniciales }}</span>
+              <div>
+                <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:16px">{{ cotMaestro.nombre }}</div>
+                <div style="font-size:13px;color:var(--muted);margin-top:2px">{{ cotMaestro.oficio }} · {{ cotMaestro.comuna }}</div>
+              </div>
+            </div>
+          </div>
+
+          <button onClick="{{ irAChat }}" style="display:inline-flex;align-items:center;gap:8px;background:var(--text);color:#fff;border:none;border-radius:999px;padding:14px 28px;font:700 15px Inter,sans-serif;cursor:pointer" style-hover="background:var(--cta)">Ir al chat →</button>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ cotMostrarNav }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:32px;gap:12px">
+          <button onClick="{{ cotAtras }}" style="background:transparent;border:none;color:var(--muted);font:600 15px Inter,sans-serif;cursor:pointer;padding:12px 8px" style-hover="color:var(--text)">← Atrás</button>
+          <button onClick="{{ cotContinuar }}" disabled="{{ cotContinuarDisabled }}" style="{{ cotContinuarStyle }}">{{ cotContinuarLabel }}</button>
+        </div>
+        <sc-if value="{{ cotMostrarError }}" hint-placeholder-val="{{ false }}">
+          <p style="color:#EF4444;font-size:13.5px;text-align:center;margin:10px 0 0">{{ cotError }}</p>
+        </sc-if>
+      </sc-if>
+
+    </main>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ SOY MAESTRO — postulación ═══════ -->
+  <sc-if value="{{ esMaestros }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);background:var(--background);padding:48px 20px 60px">
+    <div style="max-width:480px;margin:0 auto">
+
+      <sc-if value="{{ maeNoEnviado }}" hint-placeholder-val="{{ true }}">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(22px,4vw,28px);letter-spacing:-0.02em;margin:0 0 8px;text-align:center">Postula en 2 minutos</h1>
+        <p style="color:var(--muted);font-size:14.5px;margin:0 0 28px;text-align:center">Te avisamos cuando un cliente de tu zona necesite tu oficio. Aceptas con un tap. <strong style="color:var(--text)">10% de comisión</strong> solo cuando cierras un trabajo — sin planes ni mensualidades.</p>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:20px;padding:26px;display:grid;gap:14px">
+          <input type="text" value="{{ maeNombre }}" onChange="{{ maeSetNombre }}" placeholder="Nombre completo" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;outline:none" style-focus="border-color:var(--cta)">
+          <select value="{{ maeOficio }}" onChange="{{ maeSetOficio }}" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:500 15px Inter,sans-serif;color:var(--text);background:#fff;outline:none;cursor:pointer" style-focus="border-color:var(--cta)">
+            <option value="">Tu oficio</option>
+            <sc-for list="{{ oficiosOpciones }}" as="of" hint-placeholder-count="6">
+              <option value="{{ of.id }}">{{ of.nombre }}</option>
+            </sc-for>
+          </select>
+          <select value="{{ maeComuna }}" onChange="{{ maeSetComuna }}" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:500 15px Inter,sans-serif;color:var(--text);background:#fff;outline:none;cursor:pointer" style-focus="border-color:var(--cta)">
+            <option value="">Comuna donde trabajas</option>
+            <option value="Rancagua">Rancagua</option>
+            <option value="Machalí">Machalí</option>
+            <option value="Graneros">Graneros</option>
+            <option value="Olivar">Olivar</option>
+            <option value="Doñihue">Doñihue</option>
+          </select>
+          <input type="number" value="{{ maeExperiencia }}" onChange="{{ maeSetExperiencia }}" placeholder="Años de experiencia" min="0" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;outline:none" style-focus="border-color:var(--cta)">
+          <input type="tel" value="{{ maeWhatsapp }}" onChange="{{ maeSetWhatsapp }}" placeholder="WhatsApp (+56 9 …)" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;outline:none" style-focus="border-color:var(--cta)">
+          <sc-if value="{{ maeEsElectricista }}" hint-placeholder-val="{{ false }}">
+            <label style="display:flex;gap:12px;align-items:flex-start;background:var(--background);border-radius:12px;padding:16px;font-size:14px;line-height:1.5;cursor:pointer">
+              <input type="checkbox" checked="{{ sec }}" onChange="{{ setSec }}" style="margin-top:2px;accent-color:var(--cta);width:18px;height:18px">
+              <span>Cuento con <strong>certificación SEC vigente</strong> (clase D o superior).</span>
+            </label>
+          </sc-if>
+          <button onClick="{{ maePostular }}" disabled="{{ maePostularDisabled }}" style="{{ maePostularStyle }}">{{ maePostularLabel }}</button>
+          <sc-if value="{{ maeMostrarError }}" hint-placeholder-val="{{ false }}">
+            <p style="color:#EF4444;font-size:13px;text-align:center;margin:0">{{ maeError }}</p>
+          </sc-if>
+          <div style="font-size:12px;color:#94A3B8;text-align:center">Sin costo de inscripción. Verificación de identidad obligatoria.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ maeEnviado }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid var(--border);border-radius:20px;padding:40px 28px;text-align:center">
+          <div style="width:64px;height:64px;border-radius:50%;background:#E8EFFB;color:var(--cta);display:inline-flex;align-items:center;justify-content:center;font-size:28px;font-weight:800">✓</div>
+          <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.02em;margin:18px 0 10px">¡Postulación recibida!</h2>
+          <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0 auto 24px;max-width:340px">Te escribiremos por <strong style="color:var(--text)">WhatsApp en 1–2 días hábiles</strong> para verificar tu identidad y activar tu perfil.</p>
+          <button onClick="{{ irAEntrada }}" style="display:inline-flex;background:var(--text);color:#fff;border:none;border-radius:999px;padding:13px 26px;font:600 14.5px Inter,sans-serif;cursor:pointer" style-hover="background:var(--cta)">Volver al inicio</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ AUTH ═══════ -->
+  <sc-if value="{{ esAuth }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);background:var(--background);display:flex;align-items:flex-start;justify-content:center;padding:48px 20px 80px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:24px;padding:36px 32px;max-width:440px;width:100%">
+
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:26px;color:var(--text)">JJS<span style="color:var(--cta)">.</span></div>
+      </div>
+
+      <div style="display:flex;gap:0;background:var(--background);border-radius:12px;padding:4px;margin-bottom:26px">
+        <button onClick="{{ authIrLogin }}" style="{{ authTabLoginStyle }}">Iniciar sesión</button>
+        <button onClick="{{ authIrRegistro }}" style="{{ authTabRegistroStyle }}">Crear cuenta</button>
+      </div>
+
+      <sc-if value="{{ authEsLogin }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;gap:14px">
+          <input type="email" value="{{ authEmail }}" onChange="{{ authSetEmail }}" placeholder="Tu email" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font:400 15px Inter,sans-serif;outline:none;background:#fff" style-focus="border-color:var(--cta)">
+          <input type="password" value="{{ authPassword }}" onChange="{{ authSetPassword }}" placeholder="Contraseña" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font:400 15px Inter,sans-serif;outline:none;background:#fff" style-focus="border-color:var(--cta)">
+          <sc-if value="{{ authMostrarError }}" hint-placeholder-val="{{ false }}">
+            <p style="color:#EF4444;font-size:13.5px;margin:0;text-align:center">{{ authError }}</p>
+          </sc-if>
+          <button onClick="{{ authLogin }}" disabled="{{ authLoginDisabled }}" style="{{ authLoginStyle }}">{{ authLoginLabel }}</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ authEsRegistro }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;gap:14px">
+          <input type="text" value="{{ authNombre }}" onChange="{{ authSetNombre }}" placeholder="Tu nombre (opcional)" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font:400 15px Inter,sans-serif;outline:none;background:#fff" style-focus="border-color:var(--cta)">
+          <input type="email" value="{{ authEmail }}" onChange="{{ authSetEmail }}" placeholder="Tu email" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font:400 15px Inter,sans-serif;outline:none;background:#fff" style-focus="border-color:var(--cta)">
+          <input type="password" value="{{ authPassword }}" onChange="{{ authSetPassword }}" placeholder="Contraseña (mín. 6 caracteres)" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font:400 15px Inter,sans-serif;outline:none;background:#fff" style-focus="border-color:var(--cta)">
+          <sc-if value="{{ authMostrarError }}" hint-placeholder-val="{{ false }}">
+            <p style="color:#EF4444;font-size:13.5px;margin:0;text-align:center">{{ authError }}</p>
+          </sc-if>
+          <button onClick="{{ authRegistrar }}" disabled="{{ authRegistrarDisabled }}" style="{{ authRegistrarStyle }}">{{ authRegistrarLabel }}</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ DASHBOARD MAESTRO ═══════ -->
+  <sc-if value="{{ esDashboard }}" hint-placeholder-val="{{ false }}">
+  <div style="background:var(--background);min-height:calc(100vh - 60px)">
+
+    <div style="background:var(--text);padding:26px 20px 22px">
+      <div style="max-width:520px;margin:0 auto;display:flex;align-items:center;gap:14px">
+        <span style="width:52px;height:52px;border-radius:50%;background:var(--cta);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif;font-weight:800;font-size:18px;flex:none">{{ dashMaestro.iniciales }}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:#fff">{{ dashMaestro.nombre }}</div>
+          <div style="font-size:12.5px;color:#94A3B8;margin-top:2px">Panel de maestro</div>
+        </div>
+        <button onClick="{{ dashToggleDisponible }}" style="{{ dashDisponibleStyle }}">{{ dashDisponibleLabel }}</button>
+      </div>
+    </div>
+
+    <div style="max-width:520px;margin:0 auto;padding:22px 16px">
+
+      <sc-if value="{{ dashCargando }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:56px 20px;color:var(--muted)">Cargando trabajos disponibles…</div>
+      </sc-if>
+
+      <sc-if value="{{ dashError }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:12px;padding:18px;color:#EF4444;text-align:center">{{ dashError }}</div>
+      </sc-if>
+
+      <sc-if value="{{ dashAceptError }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#FFF6E8;border:1px solid #F5C367;border-radius:12px;padding:14px 18px;color:#B97A0F;text-align:center;margin-bottom:14px;font-size:14px">{{ dashAceptError }}</div>
+      </sc-if>
+
+      <sc-if value="{{ dashNoDisponible }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:56px 20px">
+          <div style="font-size:44px;margin-bottom:14px">😴</div>
+          <h3 style="font-family:Manrope,sans-serif;font-weight:800;font-size:19px;margin:0 0 8px">Estás desactivado</h3>
+          <p style="color:var(--muted);font-size:14.5px;margin:0">Actívate arriba para volver a recibir trabajos de tu zona.</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ dashSinLeads }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:56px 20px">
+          <div style="font-size:44px;margin-bottom:14px">🔧</div>
+          <h3 style="font-family:Manrope,sans-serif;font-weight:800;font-size:19px;margin:0 0 8px">No hay trabajos disponibles ahora</h3>
+          <p style="color:var(--muted);font-size:14.5px;margin:0">Cuando un cliente publique tu oficio en tu zona, aparecerá aquí al instante.</p>
+        </div>
+      </sc-if>
+
+      <sc-for list="{{ dashLeads }}" as="lead">
+        <div style="background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <span style="background:#E8EFFB;color:var(--cta-hover);border-radius:999px;padding:4px 12px;font:700 12px Inter,sans-serif">{{ lead.oficioLabel }}</span>
+            <span style="font-size:12.5px;font-weight:600">{{ lead.urgenciaLabel }}</span>
+          </div>
+          <p style="font-size:15px;line-height:1.6;color:var(--text);margin:0 0 10px;font-weight:500">{{ lead.descripcion }}</p>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:16px">📍 {{ lead.comuna }}</div>
+          <div style="display:flex;gap:10px">
+            <button onClick="{{ lead.aceptar }}" style="flex:1;background:var(--cta);color:#fff;border:none;border-radius:999px;padding:13px;font:700 15px Inter,sans-serif;cursor:pointer" style-hover="background:var(--cta-hover)">Aceptar trabajo ✓</button>
+            <button onClick="{{ lead.rechazar }}" style="background:var(--background);color:var(--muted);border:none;border-radius:999px;padding:13px 20px;font:600 14px Inter,sans-serif;cursor:pointer" style-hover="background:var(--border)">Rechazar</button>
+          </div>
+        </div>
+      </sc-for>
+
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ CHAT ═══════ -->
+  <sc-if value="{{ esChat }}" hint-placeholder-val="{{ false }}">
+  <div style="background:var(--background);min-height:calc(100vh - 60px);display:flex;flex-direction:column">
+
+    <div class="jjs-chat-header" style="position:sticky;top:60px;z-index:40;background:#fff;border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px">
+      <span style="width:42px;height:42px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:inline-flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif;font-weight:800;font-size:16px;flex:none">{{ chatMaestro.iniciales }}</span>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:15.5px;color:var(--text)">{{ chatMaestro.nombre }}</div>
+      </div>
+    </div>
+
+    <sc-if value="{{ chatAvisoTelefono }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#FFF6E8;color:#B97A0F;text-align:center;font-size:13px;font-weight:600;padding:10px 16px">Por tu seguridad, no compartas números de teléfono dentro del chat.</div>
+    </sc-if>
+
+    <div class="jjs-chat-msgs" style="flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:14px;max-width:520px;width:100%;margin:0 auto;padding-bottom:150px">
+
+      <sc-for list="{{ chatMensajes }}" as="msg">
+
+        <sc-if value="{{ msg.esMaestro }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:flex-end;gap:10px;max-width:85%">
+            <span style="width:32px;height:32px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:inline-flex;align-items:center;justify-content:center;font:700 12px Manrope,sans-serif;flex:none">{{ msg.iniciales }}</span>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:12px 16px;font-size:15px;line-height:1.5;color:var(--text)">{{ msg.texto }}</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ msg.esCotizacion }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:flex-end;gap:10px">
+            <span style="width:32px;height:32px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:inline-flex;align-items:center;justify-content:center;font:700 12px Manrope,sans-serif;flex:none">{{ msg.iniciales }}</span>
+            <div style="background:#fff;border:2px solid var(--cta);border-radius:16px 16px 16px 4px;padding:16px 18px;min-width:220px;max-width:300px">
+              <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Cotización</div>
+              <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:26px;color:var(--text);margin-bottom:12px">{{ msg.cotMonto }}</div>
+              <sc-if value="{{ msg.cotNoAceptada }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ msg.aceptarCot }}" style="width:100%;background:var(--cta);color:#fff;border:none;border-radius:999px;padding:12px;font:700 14px Inter,sans-serif;cursor:pointer" style-hover="background:var(--cta-hover)">Aceptar y pagar →</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ msg.esCliente }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:flex-end">
+            <div style="background:var(--cta);color:#fff;border-radius:16px 16px 4px 16px;padding:12px 17px;max-width:80%;font-size:15px;line-height:1.5">{{ msg.texto }}</div>
+          </div>
+        </sc-if>
+
+      </sc-for>
+
+      <sc-if value="{{ chatMaestroEscribiendo }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:flex-end;gap:10px">
+          <span style="width:32px;height:32px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:inline-flex;align-items:center;justify-content:center;font:700 12px Manrope,sans-serif;flex:none">{{ chatMaestro.iniciales }}</span>
+          <div style="background:#fff;border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:13px 18px">
+            <div style="display:flex;gap:5px;align-items:center">
+              <span style="width:8px;height:8px;border-radius:50%;background:#94A3B8;display:inline-block;animation:jjsDot 1.2s ease-in-out infinite"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#94A3B8;display:inline-block;animation:jjsDot 1.2s ease-in-out .15s infinite"></span>
+              <span style="width:8px;height:8px;border-radius:50%;background:#94A3B8;display:inline-block;animation:jjsDot 1.2s ease-in-out .3s infinite"></span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+
+    <div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);z-index:40">
+      <sc-if value="{{ chatMostrarComposerCot }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:520px;margin:0 auto;padding:10px 16px 0;display:flex;gap:8px;align-items:center">
+          <input type="number" value="{{ chatCotMonto }}" onChange="{{ chatSetCotMonto }}" placeholder="Monto a cobrar (CLP)" min="0" style="flex:1;border:1.5px solid var(--border);border-radius:999px;padding:10px 16px;font:500 14px Inter,sans-serif;outline:none" style-focus="border-color:var(--cta)">
+          <button onClick="{{ chatEnviarCotizacion }}" disabled="{{ chatEnviarCotDisabled }}" style="{{ chatEnviarCotStyle }}">Cotizar</button>
+        </div>
+      </sc-if>
+      <div class="jjs-chat-input-wrap" style="padding:10px 16px 14px">
+        <div style="max-width:520px;margin:0 auto;display:flex;gap:10px;align-items:center">
+          <input value="{{ chatTexto }}" onChange="{{ chatSetTexto }}" onKeyDown="{{ chatEnviarKeydown }}" placeholder="Escribe un mensaje…" style="flex:1;border:1.5px solid var(--border);border-radius:999px;padding:12px 18px;font:15px Inter,sans-serif;outline:none;background:var(--background)" style-focus="border-color:var(--cta);background:#fff">
+          <button onClick="{{ chatEnviar }}" style="background:var(--cta);color:#fff;border:none;border-radius:999px;padding:12px 22px;font:700 15px Inter,sans-serif;cursor:pointer;white-space:nowrap" style-hover="background:var(--cta-hover)">Enviar →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </sc-if>
+
+  <!-- ═══════ PAGO ═══════ -->
+  <sc-if value="{{ esPago }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--background)">
+    <div style="max-width:400px;width:100%">
+      <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.02em;margin:0 0 20px;text-align:center">Confirmar pago</h1>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:14.5px;color:var(--muted)">Monto del trabajo</span>
+          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:26px">{{ pagoMontoFormateado }}</span>
+        </div>
+        <div style="font-size:12.5px;color:#94A3B8;margin-top:6px">Incluye la comisión de plataforma (10%). El pago queda protegido hasta confirmar el trabajo.</div>
+      </div>
+      <button onClick="{{ pagarAhora }}" disabled="{{ pagoProcesando }}" style="{{ pagoBtnStyle }}">{{ pagoBtnLabel }}</button>
+      <sc-if value="{{ pagoMostrarError }}" hint-placeholder-val="{{ false }}">
+        <p style="color:#EF4444;font-size:13.5px;text-align:center;margin:12px 0 0">{{ pagoError }}</p>
+      </sc-if>
+      <p style="font-size:12px;color:#94A3B8;text-align:center;margin:16px 0 0">Procesado por Mercado Pago. Vas a salir del sitio para pagar y vuelves automáticamente.</p>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ CONFIRMANDO PAGO — vuelta desde Mercado Pago, esperando el webhook ═══════ -->
+  <sc-if value="{{ esConfirmandoPago }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--background)">
+    <div style="max-width:400px;width:100%;text-align:center">
+      <sc-if value="{{ confirmandoPagoTimeout }}" hint-placeholder-val="{{ false }}">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.02em;margin:0 0 10px">Tu pago se está procesando</h1>
+        <p style="color:var(--muted);font-size:14.5px;margin:0 0 24px">Puede tardar unos minutos más de lo normal. Cuando se confirme, vas a poder calificar al maestro desde "Mis chats".</p>
+        <button onClick="{{ irAEntrada }}" style="display:inline-flex;background:var(--text);color:#fff;border:none;border-radius:999px;padding:13px 26px;font:600 14.5px Inter,sans-serif;cursor:pointer" style-hover="background:var(--cta)">Volver al inicio</button>
+      </sc-if>
+      <sc-if value="{{ confirmandoPagoEsperando }}" hint-placeholder-val="{{ true }}">
+        <div style="width:44px;height:44px;margin:0 auto 20px;border:3px solid var(--border);border-top-color:var(--cta);border-radius:50%;animation:jjsSpin 0.7s linear infinite"></div>
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.02em;margin:0 0 8px">Confirmando tu pago…</h1>
+        <p style="color:var(--muted);font-size:14.5px;margin:0">No cierres esta pantalla.</p>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ CALIFICACIÓN ═══════ -->
+  <sc-if value="{{ esResena }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:var(--background)">
+    <div style="max-width:400px;width:100%;text-align:center">
+
+      <sc-if value="{{ resenaNoEnviada }}" hint-placeholder-val="{{ true }}">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.02em;margin:0 0 6px">Trabajo completado ✓</h1>
+        <p style="color:var(--muted);font-size:14.5px;margin:0 0 22px">¿Cómo estuvo el maestro?</p>
+        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:20px">
+          <sc-for list="{{ resenaEstrellasOpciones }}" as="star" hint-placeholder-count="5">
+            <button onClick="{{ star.pick }}" style="background:transparent;border:none;font-size:34px;cursor:pointer;padding:0;line-height:1;color:{{ star.color }}">★</button>
+          </sc-for>
+        </div>
+        <textarea value="{{ resenaTexto }}" onChange="{{ resenaSetTexto }}" rows="3" placeholder="Cuéntanos cómo te fue (opcional)" style="width:100%;border:1px solid var(--border);border-radius:12px;padding:14px;font:400 14.5px/1.5 Inter,sans-serif;outline:none;resize:vertical;margin-bottom:16px" style-focus="border-color:var(--cta)"></textarea>
+        <button onClick="{{ enviarResena }}" disabled="{{ resenaCargando }}" style="{{ resenaBtnStyle }}">{{ resenaBtnLabel }}</button>
+        <div style="margin-top:12px">
+          <button onClick="{{ irAEntrada }}" style="background:transparent;border:none;color:#94A3B8;font:500 13.5px Inter,sans-serif;cursor:pointer">Omitir</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ resenaEnviada }}" hint-placeholder-val="{{ false }}">
+        <div style="width:64px;height:64px;border-radius:50%;background:#E8EFFB;color:var(--cta);display:inline-flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin-bottom:16px">✓</div>
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.02em;margin:0 0 20px">¡Gracias por tu calificación!</h1>
+        <button onClick="{{ irAEntrada }}" style="display:inline-flex;background:var(--text);color:#fff;border:none;border-radius:999px;padding:13px 26px;font:600 14.5px Inter,sans-serif;cursor:pointer" style-hover="background:var(--cta)">Volver al inicio</button>
+      </sc-if>
+
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ CONVERSACIONES ═══════ -->
+  <sc-if value="{{ esConversaciones }}" hint-placeholder-val="{{ false }}">
+  <div style="background:var(--background);min-height:calc(100vh - 60px);padding:28px 20px 60px">
+    <div style="max-width:560px;margin:0 auto">
+
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+        <button onClick="{{ irAEntrada }}" style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:9px 18px;font:600 14px Inter,sans-serif;color:var(--muted);cursor:pointer" style-hover="border-color:var(--cta)">← Inicio</button>
+        <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:20px;color:var(--text);margin:0">Mis conversaciones</h2>
+      </div>
+
+      <sc-if value="{{ convCargando }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:64px 0">
+          <div style="display:inline-block;width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--cta);border-radius:50%;animation:jjsSpin 0.7s linear infinite"></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ convVacia }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:64px 20px;background:#fff;border-radius:20px;border:1.5px solid var(--border)">
+          <div style="font-size:44px;margin-bottom:14px">💬</div>
+          <p style="font-family:Manrope,sans-serif;font-weight:700;font-size:17px;color:var(--text);margin:0 0 6px">Aún no tienes conversaciones</p>
+          <p style="color:#94A3B8;font-size:13.5px;margin:0">Cuando un maestro acepte tu trabajo, el chat aparece aquí.</p>
+        </div>
+      </sc-if>
+
+      <sc-for list="{{ convLista }}" as="conv">
+        <div onClick="{{ conv.abrirChat }}" style="background:#fff;border-radius:16px;border:1.5px solid var(--border);padding:16px 18px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px" style-hover="border-color:var(--cta)">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0">
+            <div style="width:40px;height:40px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif;font-weight:800;font-size:14px;flex:none">{{ conv.iniciales }}</div>
+            <div style="min-width:0">
+              <div style="font-weight:700;font-size:14.5px;color:var(--text)">{{ conv.nombreOtro }}</div>
+              <div style="font-size:12px;color:#94A3B8;margin-top:2px">{{ conv.oficio }} · {{ conv.fecha }}</div>
+            </div>
+          </div>
+          <span style="color:var(--cta);font-weight:700;font-size:13.5px;flex:none">Ver →</span>
+        </div>
+      </sc-for>
+
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    pantalla: "entrada",
+    cotPaso: 1, cotEstado: "formulario", cotCargando: false, cotError: null, cotMaestroAceptado: null,
+    cotOficio: "", cotDescripcion: "", cotComuna: "", cotDireccion: "", cotUrgencia: "",
+    cotNombre: "", cotWhatsapp: "",
+    cotLeadId: "",
+    chatLeadId: "", chatEsMaestro: false, chatClienteNombre: "",
+    chatMensajes: [], chatTexto: "", chatMaestroEscribiendo: false, chatAvisoTelefono: false,
+    chatCotMonto: "", chatEnviandoCot: false,
+    authTab: "login", authNombre: "", authEmail: "", authPassword: "", authCargando: false, authError: null, authRedirigirA: null,
+    usuario: null,
+    maeEnviado: false, maeCargando: false, maeError: null,
+    maeNombre: "", maeOficio: "", maeComuna: "", maeExperiencia: "", maeWhatsapp: "", sec: false,
+    dashMaestroId: "", dashMaestro: null, dashLeads: [], dashCargando: false, dashError: null, dashAceptError: null,
+    convCargando: false, convLista: [],
+    pagoInfo: null, pagoProcesando: false, pagoError: null, confirmandoPagoTimeout: false,
+    resenaEstrellas: 0, resenaTexto: "", resenaEnviada: false, resenaCargando: false,
+  };
+
+  OFICIOS = [
+    { id: "gasfiteria",   nombre: "Gasfitería",   ejemplos: "Fugas, llaves, calefón" },
+    { id: "electricidad", nombre: "Electricidad", ejemplos: "Enchufes, tableros, SEC" },
+    { id: "pintura",      nombre: "Pintura",      ejemplos: "Interiores, fachadas" },
+    { id: "cerrajeria",   nombre: "Cerrajería",   ejemplos: "Aperturas, chapas" },
+    { id: "carpinteria",  nombre: "Carpintería",  ejemplos: "Muebles, puertas" },
+    { id: "mecanica",     nombre: "Mecánica",     ejemplos: "Autos, motos" },
+  ];
+
+  COT_TITULOS = ["Detalle", "Ubicación", "Contacto"];
+  COT_URGENCIAS = [
+    { id: "hoy",      titulo: "🔴 Hoy — es urgente" },
+    { id: "semana",   titulo: "🟡 Esta semana" },
+    { id: "sinapuro", titulo: "🟢 Sin apuro" },
+  ];
+
+  componentDidMount() {
+    this._prevPantalla = this.state.pantalla;
+    this._initNavHeight();
+
+    // Vuelta desde Mercado Pago (Checkout Pro) — tiene prioridad sobre cualquier otra ruta
+    const params = new URLSearchParams(window.location.search);
+    const pago = params.get("pago");
+    if (pago) {
+      const leadIdRet = params.get("leadId") || "";
+      const maestroIdRet = params.get("maestroId") || "";
+      const montoRet = Number(params.get("monto")) || 0;
+      window.history.replaceState({}, "", window.location.pathname);
+      if (pago === "exito" && leadIdRet) {
+        this.setState({ pantalla: "confirmandoPago", confirmandoPagoTimeout: false, pagoInfo: { leadId: leadIdRet, maestroId: maestroIdRet, monto: montoRet } });
+        this._pollConfirmacionPago(leadIdRet);
+      } else {
+        this.setState({
+          pantalla: "pago",
+          pagoInfo: { leadId: leadIdRet, maestroId: maestroIdRet, monto: montoRet },
+          pagoError: pago === "pendiente" ? "El pago quedó pendiente de confirmación. Puedes reintentar." : "El pago no se completó. Intenta nuevamente.",
+        });
+      }
+      return;
+    }
+
+    const token = localStorage.getItem("jjs_token");
+    if (token) {
+      try {
+        const parts = token.split(".");
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+          if (payload.exp > Date.now()) {
+            const u = { nombre: payload.nombre, email: payload.email, rol: payload.rol, maestroId: payload.maestroId || null };
+            this.setState({ usuario: u });
+            if (u.rol === "maestro" && u.maestroId) { this._cargarDashboard(u.maestroId); return; }
+          } else {
+            localStorage.removeItem("jjs_token");
+          }
+        }
+      } catch(e) { localStorage.removeItem("jjs_token"); }
+    }
+    const maestroId = new URLSearchParams(window.location.search).get("maestro");
+    if (maestroId) this._cargarDashboard(maestroId);
+  }
+
+  componentDidUpdate() {
+    if (this.state.pantalla === "chat") {
+      const msgs = this.state.chatMensajes;
+      const lastId = msgs.length ? msgs[msgs.length - 1].id : null;
+      if (this._prevPantalla !== "chat") this._lastChatMsgId = lastId;
+      this._prevPantalla = this.state.pantalla;
+    } else {
+      this._prevPantalla = this.state.pantalla;
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._dashPoll) clearInterval(this._dashPoll);
+    if (this._msgPoll) clearInterval(this._msgPoll);
+    if (this._pagoPoll) clearInterval(this._pagoPoll);
+  }
+
+  _initNavHeight() {
+    const navEl = document.querySelector("nav");
+    if (!navEl) return;
+    document.documentElement.style.setProperty("--jjs-nav-h", navEl.getBoundingClientRect().height + "px");
+  }
+
+  irA(p, extra) { this.setState({ pantalla: p, ...(extra || {}) }); window.scrollTo(0, 0); }
+
+  irEntradaCliente() {
+    this.setState({
+      pantalla: "home",
+      cotOficio: "", cotPaso: 1, cotEstado: "formulario",
+      cotDescripcion: "", cotComuna: "", cotDireccion: "", cotUrgencia: "",
+      cotNombre: "", cotWhatsapp: "", cotError: null,
+    });
+    window.scrollTo(0, 0);
+  }
+
+  irEntradaMaestro() {
+    if (this.state.usuario && this.state.usuario.rol === "maestro" && this.state.usuario.maestroId) {
+      this._cargarDashboard(this.state.usuario.maestroId);
+      return;
+    }
+    this.irA("maestros");
+  }
+
+  async authLogin() {
+    const s = this.state;
+    if (!s.authEmail || !s.authPassword || s.authCargando) return;
+    this.setState({ authCargando: true, authError: null });
+    try {
+      const r = await fetch(API_AUTH_LOGIN, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accion: "login", email: s.authEmail, password: s.authPassword }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Error al iniciar sesión");
+      localStorage.setItem("jjs_token", d.token);
+      this.setState({ authCargando: false, usuario: d.usuario, authError: null }, () => {
+        if (d.usuario.rol === "maestro" && d.usuario.maestroId) this._cargarDashboard(d.usuario.maestroId);
+        else this.irA("home");
+      });
+    } catch(e) {
+      this.setState({ authCargando: false, authError: e.message });
+    }
+  }
+
+  async authRegistrar() {
+    const s = this.state;
+    if (s.authPassword.length < 6) return this.setState({ authError: "La contraseña debe tener al menos 6 caracteres" });
+    if (!s.authEmail || s.authCargando) return;
+    this.setState({ authCargando: true, authError: null });
+    try {
+      const r = await fetch(API_AUTH_REGISTER, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accion: "registro", nombre: s.authNombre || "Cliente JJS", email: s.authEmail, password: s.authPassword, rol: "cliente" }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Error al registrar");
+      localStorage.setItem("jjs_token", d.token);
+      this.setState({ authCargando: false, usuario: d.usuario, authError: null }, () => this.irA("home"));
+    } catch(e) {
+      this.setState({ authCargando: false, authError: e.message });
+    }
+  }
+
+  cerrarSesion() {
+    if (this._dashPoll) { clearInterval(this._dashPoll); this._dashPoll = null; }
+    localStorage.removeItem("jjs_token");
+    this.setState({ usuario: null });
+    this.irA("entrada");
+  }
+
+  pickCard(sel) {
+    return "text-align:left;background:" + (sel ? "#E8EFFB" : "#fff") + ";border:2px solid " + (sel ? "var(--cta)" : "var(--border)") + ";border-radius:12px;padding:16px;cursor:pointer;transition:border-color .15s ease;width:100%";
+  }
+
+  _oficioLabel(id) { return (this.OFICIOS.find(o => o.id === id) || {}).nombre || id || "Maestro"; }
+
+  cotValido() {
+    const s = this.state;
+    if (s.cotPaso === 1) return s.cotDescripcion.trim().length >= 10 && !!s.cotUrgencia;
+    if (s.cotPaso === 2) return !!s.cotComuna;
+    if (s.cotPaso === 3) {
+      const d = s.cotWhatsapp.replace(/\D/g, "");
+      return (d.length === 9 && d[0] === "9") || (d.length === 11 && d.startsWith("569"));
+    }
+    return false;
+  }
+
+  async cotEnviar() {
+    this.setState({ cotCargando: true, cotError: null });
+    const s = this.state;
+    try {
+      const resLead = await fetch(API_LEADS, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fields: {
+            oficio: s.cotOficio, descripcion: s.cotDescripcion, comuna: s.cotComuna, direccion: s.cotDireccion,
+            urgencia: s.cotUrgencia, nombre_cliente: s.cotNombre, whatsapp_cliente: s.cotWhatsapp,
+            email_cliente: (s.usuario && s.usuario.email) || "", estado: "pendiente",
+          },
+        }),
+      });
+      if (!resLead.ok) throw new Error("API " + resLead.status);
+      const leadData = await resLead.json();
+      this.setState({ cotEstado: "buscando", cotCargando: false, cotLeadId: leadData.id });
+      window.scrollTo(0, 0);
+      this._pollLead(leadData.id);
+    } catch(e) {
+      this.setState({ cotCargando: false, cotError: "Hubo un problema al conectar. Intenta de nuevo." });
+    }
+  }
+
+  _pollLead(leadId) {
+    if (this._pollTimer) clearInterval(this._pollTimer);
+    this._pollTimer = setInterval(async () => {
+      try {
+        const r = await fetch(API_ESTADO_LEAD + "?leadId=" + leadId);
+        const d = await r.json();
+        if (d.maestro && (d.estado === "aceptado" || d.estado === "cotizado")) {
+          clearInterval(this._pollTimer); this._pollTimer = null;
+          this.setState({
+            cotEstado: "aceptado",
+            cotMaestroAceptado: {
+              id: d.maestro.id, iniciales: d.maestro.iniciales, nombre: d.maestro.nombre,
+              oficio: this._oficioLabel(d.maestro.oficio), comuna: d.maestro.comuna || "Rancagua",
+              telefono: d.maestro.telefono || "",
+            },
+          });
+          window.scrollTo(0, 0);
+        }
+      } catch(e) { /* silent, sigue intentando */ }
+    }, 4000);
+    setTimeout(() => { if (this._pollTimer) { clearInterval(this._pollTimer); this._pollTimer = null; } }, 600000);
+  }
+
+  irAChat() {
+    const leadId = this.state.cotLeadId;
+    this.setState({ pantalla: "chat", chatMensajes: [], chatMaestroEscribiendo: false, chatLeadId: leadId, chatEsMaestro: false, chatCotMonto: "" });
+    window.scrollTo(0, 0);
+    this._cargarMensajes(leadId);
+    this._iniciarPollMensajes(leadId);
+  }
+
+  async _cargarMensajes(leadId) {
+    try {
+      const r = await fetch(API_MENSAJES + "?leadId=" + leadId);
+      const d = await r.json();
+      if (d.mensajes) {
+        this.setState({ chatMensajes: d.mensajes });
+        setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 80);
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  _iniciarPollMensajes(leadId) {
+    if (this._msgPoll) clearInterval(this._msgPoll);
+    this._msgPoll = setInterval(async () => {
+      if (this.state.pantalla !== "chat") { clearInterval(this._msgPoll); this._msgPoll = null; return; }
+      await this._cargarMensajes(leadId);
+    }, 4000);
+  }
+
+  _pareceTelefono(texto) {
+    const digitos = (texto.match(/\d/g) || []).length;
+    return digitos >= 7;
+  }
+
+  chatEnviar() {
+    const texto = this.state.chatTexto.trim();
+    if (!texto) return;
+    if (this._pareceTelefono(texto)) {
+      this.setState({ chatTexto: "", chatAvisoTelefono: true });
+      setTimeout(() => this.setState({ chatAvisoTelefono: false }), 4000);
+      return;
+    }
+    const leadId = this.state.chatLeadId;
+    const de = this.state.chatEsMaestro ? "maestro" : "cliente";
+    const msg = { id: Date.now(), de, texto, creado_en: new Date().toISOString() };
+    this.setState({ chatTexto: "", chatMensajes: [...this.state.chatMensajes, msg] });
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 80);
+    fetch(API_MENSAJES, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ leadId, texto, de }),
+    }).catch(() => {});
+  }
+
+  async chatEnviarCotizacion() {
+    const monto = parseInt((this.state.chatCotMonto || "").replace(/\D/g, ""), 10) || 0;
+    if (!monto || this.state.chatEnviandoCot) return;
+    this.setState({ chatEnviandoCot: true });
+    const leadId = this.state.chatLeadId;
+    try {
+      await fetch(API_MENSAJES, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId, texto: "Cotización enviada", de: "maestro", monto }),
+      });
+      this.setState({ chatCotMonto: "", chatEnviandoCot: false });
+      this._cargarMensajes(leadId);
+    } catch(e) { this.setState({ chatEnviandoCot: false }); }
+  }
+
+  chatAceptarCot(msg) {
+    const maestroId = (this.state.cotMaestroAceptado && this.state.cotMaestroAceptado.id) || "";
+    this.setState({ pantalla: "pago", pagoInfo: { leadId: this.state.chatLeadId, maestroId, monto: msg.cotMontoNum }, pagoError: null });
+    window.scrollTo(0, 0);
+  }
+
+  async pagarAhora() {
+    const info = this.state.pagoInfo;
+    if (!info || this.state.pagoProcesando) return;
+    this.setState({ pagoProcesando: true, pagoError: null });
+    try {
+      const r = await fetch(API_CREAR_PREFERENCIA, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId: info.leadId, maestroId: info.maestroId, monto: info.monto }),
+      });
+      const d = await r.json();
+      if (!r.ok || !d.initPoint) throw new Error(d.error || "No se pudo iniciar el pago");
+      // Sale del sitio hacia el Checkout de Mercado Pago; vuelve solo por back_urls.
+      window.location.href = d.initPoint;
+    } catch(e) {
+      this.setState({ pagoProcesando: false, pagoError: e.message });
+    }
+  }
+
+  _pollConfirmacionPago(leadId) {
+    if (this._pagoPoll) clearInterval(this._pagoPoll);
+    let intentos = 0;
+    this._pagoPoll = setInterval(async () => {
+      intentos++;
+      try {
+        const r = await fetch(API_ESTADO_LEAD + "?leadId=" + leadId);
+        const d = await r.json();
+        if (d.estado === "completado") {
+          clearInterval(this._pagoPoll); this._pagoPoll = null;
+          this.setState({ pantalla: "resena", resenaEstrellas: 0, resenaTexto: "", resenaEnviada: false });
+          window.scrollTo(0, 0);
+          return;
+        }
+      } catch(e) { /* silent, sigue intentando */ }
+      if (intentos >= 20) { // ~60s esperando la confirmación del webhook
+        clearInterval(this._pagoPoll); this._pagoPoll = null;
+        this.setState({ confirmandoPagoTimeout: true });
+      }
+    }, 3000);
+  }
+
+  async enviarResena() {
+    const s = this.state;
+    if (s.resenaCargando) return;
+    const maestroId = s.pagoInfo && s.pagoInfo.maestroId;
+    if (!maestroId || !s.resenaEstrellas) { this.setState({ resenaEnviada: true }); return; }
+    this.setState({ resenaCargando: true });
+    try {
+      await fetch(API_RESENAS, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ maestroId, estrellas: s.resenaEstrellas, texto: s.resenaTexto, nombre_cliente: s.cotNombre || "" }),
+      });
+    } catch(e) { /* silent */ }
+    this.setState({ resenaCargando: false, resenaEnviada: true });
+  }
+
+  irAConversaciones() {
+    const u = this.state.usuario;
+    if (!u) { this.setState({ pantalla: "auth", authRedirigirA: "conversaciones", authTab: "login" }, () => window.scrollTo(0, 0)); return; }
+    this.setState({ pantalla: "conversaciones", convCargando: true, convLista: [] }, () => window.scrollTo(0, 0));
+    this._cargarConversaciones();
+  }
+
+  _cargarConversaciones() {
+    const u = this.state.usuario;
+    const url = u.rol === "maestro"
+      ? "/api/leads-maestro?maestroId=" + encodeURIComponent(u.maestroId) + "&tipo=historial"
+      : "/api/leads?clienteEmail=" + encodeURIComponent(u.email);
+    fetch(url).then(r => r.json()).then(d => {
+      const lista = (d.leads || []).map(lead => {
+        const nombreOtro = u.rol === "maestro" ? (lead.nombre_cliente || "Cliente") : (lead.nombre_maestro || "Maestro");
+        const ini = nombreOtro.split(" ").filter(Boolean).map(w => w[0] || "").join("").substring(0, 2).toUpperCase() || "??";
+        return { id: lead.id, oficio: this._oficioLabel(lead.oficio), nombreOtro, iniciales: ini, fecha: new Date(lead.creado || lead.createdTime || Date.now()).toLocaleDateString("es-CL") };
+      });
+      this.setState({ convCargando: false, convLista: lista });
+    }).catch(() => this.setState({ convCargando: false }));
+  }
+
+  _abrirChatDesdeHistorial(conv) {
+    const u = this.state.usuario;
+    if (this._msgPoll) { clearInterval(this._msgPoll); this._msgPoll = null; }
+    this.setState({ pantalla: "chat", chatLeadId: conv.id, chatEsMaestro: u.rol === "maestro", chatClienteNombre: conv.nombreOtro, chatMensajes: [], chatMaestroEscribiendo: false }, () => {
+      window.scrollTo(0, 0);
+      this._cargarMensajes(conv.id);
+      this._iniciarPollMensajes(conv.id);
+    });
+  }
+
+  maeValido() {
+    const s = this.state;
+    const d = s.maeWhatsapp.replace(/\D/g, "");
+    return s.maeNombre.trim().length >= 2 && !!s.maeOficio && !!s.maeComuna &&
+      ((d.length === 9 && d[0] === "9") || (d.length === 11 && d.startsWith("569")));
+  }
+
+  _cargarDashboard(maestroId) {
+    this.setState({ pantalla: "dashboard", dashMaestroId: maestroId, dashCargando: true, dashError: null, dashAceptError: null });
+    fetch("/api/leads-maestro?maestroId=" + maestroId)
+      .then(r => r.json())
+      .then(d => {
+        if (d.error) this.setState({ dashCargando: false, dashError: d.error });
+        else { this.setState({ dashCargando: false, dashMaestro: d.maestro, dashLeads: d.leads }); this._iniciarPollDashboard(maestroId); }
+      })
+      .catch(e => this.setState({ dashCargando: false, dashError: e.message }));
+  }
+
+  _iniciarPollDashboard(maestroId) {
+    if (this._dashPoll) clearInterval(this._dashPoll);
+    this._dashPoll = setInterval(async () => {
+      if (this.state.pantalla !== "dashboard") { clearInterval(this._dashPoll); this._dashPoll = null; return; }
+      try {
+        const r = await fetch("/api/leads-maestro?maestroId=" + maestroId);
+        const d = await r.json();
+        if (!d.error) this.setState({ dashLeads: d.leads, dashMaestro: d.maestro });
+      } catch(e) { /* silent */ }
+    }, 4000);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cotV = this.cotValido();
+    const maeV = this.maeValido();
+
+    return {
+      esEntrada: s.pantalla === "entrada",
+      esHome: s.pantalla === "home",
+      esCotizar: s.pantalla === "cotizar",
+      esMaestros: s.pantalla === "maestros",
+      esChat: s.pantalla === "chat",
+      esDashboard: s.pantalla === "dashboard",
+      esAuth: s.pantalla === "auth",
+      esConversaciones: s.pantalla === "conversaciones",
+      esPago: s.pantalla === "pago",
+      esConfirmandoPago: s.pantalla === "confirmandoPago",
+      confirmandoPagoTimeout: s.confirmandoPagoTimeout,
+      confirmandoPagoEsperando: !s.confirmandoPagoTimeout,
+      esResena: s.pantalla === "resena",
+
+      irAHome: () => {
+        const u = s.usuario;
+        if (u && u.rol === "maestro" && u.maestroId) this._cargarDashboard(u.maestroId);
+        else if (u) this.irA("home");
+        else this.irA("entrada");
+      },
+      irAEntrada: () => this.irA("entrada"),
+      irEntradaCliente: () => this.irEntradaCliente(),
+      irEntradaMaestro: () => this.irEntradaMaestro(),
+      irAConversaciones: () => this.irAConversaciones(),
+      irAAuth: () => this.irA("auth"),
+      irAChat: () => this.irAChat(),
+
+      usuarioLoggedIn: !!s.usuario,
+      usuarioNoLoggedIn: !s.usuario,
+      cerrarSesion: () => this.cerrarSesion(),
+
+      authEsLogin: s.authTab === "login",
+      authEsRegistro: s.authTab === "registro",
+      authTabLoginStyle: "flex:1;border:none;border-radius:10px;padding:10px;font:600 14px Inter,sans-serif;cursor:pointer;" + (s.authTab === "login" ? "background:#fff;color:var(--text);box-shadow:0 1px 6px rgba(0,0,0,.08)" : "background:transparent;color:var(--muted)"),
+      authTabRegistroStyle: "flex:1;border:none;border-radius:10px;padding:10px;font:600 14px Inter,sans-serif;cursor:pointer;" + (s.authTab === "registro" ? "background:#fff;color:var(--text);box-shadow:0 1px 6px rgba(0,0,0,.08)" : "background:transparent;color:var(--muted)"),
+      authIrLogin: () => this.setState({ authTab: "login", authError: null }),
+      authIrRegistro: () => this.setState({ authTab: "registro", authError: null }),
+      authNombre: s.authNombre, authSetNombre: (e) => this.setState({ authNombre: e.target.value }),
+      authEmail: s.authEmail, authSetEmail: (e) => this.setState({ authEmail: e.target.value }),
+      authPassword: s.authPassword, authSetPassword: (e) => this.setState({ authPassword: e.target.value }),
+      authLogin: () => this.authLogin(),
+      authRegistrar: () => this.authRegistrar(),
+      authLoginDisabled: !s.authEmail || !s.authPassword || s.authCargando,
+      authRegistrarDisabled: !s.authEmail || s.authPassword.length < 6 || s.authCargando,
+      authLoginLabel: s.authCargando ? "Ingresando…" : "Iniciar sesión",
+      authRegistrarLabel: s.authCargando ? "Creando cuenta…" : "Crear cuenta →",
+      authLoginStyle: "border:none;border-radius:12px;padding:15px;font:700 15.5px Inter,sans-serif;width:100%;cursor:pointer;" + (!s.authEmail || !s.authPassword || s.authCargando ? "background:var(--border);color:#94A3B8;cursor:not-allowed" : "background:var(--cta);color:#fff"),
+      authRegistrarStyle: "border:none;border-radius:12px;padding:15px;font:700 15.5px Inter,sans-serif;width:100%;cursor:pointer;" + (!s.authEmail || s.authPassword.length < 6 || s.authCargando ? "background:var(--border);color:#94A3B8;cursor:not-allowed" : "background:var(--text);color:#fff"),
+      authError: s.authError || "", authMostrarError: !!s.authError,
+
+      oficiosGrid: this.OFICIOS.map(o => ({
+        ...o, inicial: o.nombre.charAt(0),
+        ir: () => this.irA("cotizar", {
+          cotOficio: o.id, cotPaso: 1, cotEstado: "formulario",
+          cotDescripcion: "", cotComuna: "", cotDireccion: "", cotUrgencia: "",
+          cotNombre: "", cotWhatsapp: "", cotError: null,
+        }),
+      })),
+      oficiosOpciones: this.OFICIOS,
+
+      cotEnCurso: s.cotEstado === "formulario",
+      cotBuscando: s.cotEstado === "buscando",
+      cotAceptado: s.cotEstado === "aceptado",
+      cotEsPaso1: s.cotEstado === "formulario" && s.cotPaso === 1,
+      cotEsPaso2: s.cotEstado === "formulario" && s.cotPaso === 2,
+      cotEsPaso3: s.cotEstado === "formulario" && s.cotPaso === 3,
+      cotMostrarNav: s.cotEstado === "formulario",
+      cotMaestro: s.cotMaestroAceptado || {},
+      cotOficioLabel: this._oficioLabel(s.cotOficio),
+      cotPasoNum: s.cotPaso,
+      cotPasoTitulo: this.COT_TITULOS[s.cotPaso - 1],
+      cotProgressFill: "height:100%;border-radius:999px;background:var(--cta);transition:width .3s ease;width:" + (s.cotPaso / 3) * 100 + "%",
+      cotUrgencias: this.COT_URGENCIAS.map(u => ({ ...u, cardStyle: this.pickCard(s.cotUrgencia === u.id), pick: () => this.setState({ cotUrgencia: u.id }) })),
+      cotDescripcion: s.cotDescripcion, cotSetDescripcion: (e) => this.setState({ cotDescripcion: e.target.value }),
+      cotComuna: s.cotComuna, cotSetComuna: (e) => this.setState({ cotComuna: e.target.value }),
+      cotDireccion: s.cotDireccion, cotSetDireccion: (e) => this.setState({ cotDireccion: e.target.value }),
+      cotNombre: s.cotNombre, cotSetNombre: (e) => this.setState({ cotNombre: e.target.value }),
+      cotWhatsapp: s.cotWhatsapp, cotSetWhatsapp: (e) => this.setState({ cotWhatsapp: e.target.value }),
+      cotAtras: () => { if (s.cotPaso <= 1) this.irA("home"); else this.setState({ cotPaso: s.cotPaso - 1 }); window.scrollTo(0, 0); },
+      cotContinuar: () => {
+        if (!cotV || s.cotCargando) return;
+        if (s.cotPaso === 3) this.cotEnviar();
+        else { this.setState({ cotPaso: s.cotPaso + 1 }); window.scrollTo(0, 0); }
+      },
+      cotContinuarDisabled: !cotV || s.cotCargando,
+      cotContinuarLabel: s.cotPaso === 3 ? (s.cotCargando ? "Publicando…" : "Publicar trabajo") : "Continuar →",
+      cotContinuarStyle: "border:none;border-radius:999px;padding:14px 28px;font:600 15px Inter,sans-serif;" + (cotV && !s.cotCargando ? "background:var(--cta);color:#fff;cursor:pointer" : "background:var(--border);color:#94A3B8;cursor:not-allowed"),
+      cotMostrarError: !!s.cotError, cotError: s.cotError || "",
+
+      maeNoEnviado: !s.maeEnviado, maeEnviado: s.maeEnviado,
+      maeNombre: s.maeNombre, maeSetNombre: (e) => this.setState({ maeNombre: e.target.value }),
+      maeOficio: s.maeOficio, maeSetOficio: (e) => this.setState({ maeOficio: e.target.value }),
+      maeComuna: s.maeComuna, maeSetComuna: (e) => this.setState({ maeComuna: e.target.value }),
+      maeExperiencia: s.maeExperiencia, maeSetExperiencia: (e) => this.setState({ maeExperiencia: e.target.value }),
+      maeWhatsapp: s.maeWhatsapp, maeSetWhatsapp: (e) => this.setState({ maeWhatsapp: e.target.value }),
+      sec: s.sec, setSec: (e) => this.setState({ sec: e.target.checked }),
+      maeEsElectricista: s.maeOficio === "electricidad",
+      maePostular: async () => {
+        if (!maeV || s.maeCargando) return;
+        this.setState({ maeCargando: true, maeError: null });
+        try {
+          const resMae = await fetch(API_MAESTROS, {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fields: {
+              "Nombre Maestro": s.maeNombre, "Teléfono": s.maeWhatsapp, "Especialidades": [s.maeOficio],
+              "Comunas Disponibles": [s.maeComuna], "Verificado": false, "Disponible": true,
+            } }),
+          });
+          if (!resMae.ok) throw new Error("API " + resMae.status);
+          this.setState({ maeEnviado: true, maeCargando: false });
+        } catch(e) {
+          this.setState({ maeCargando: false, maeError: "Hubo un problema. Intenta de nuevo." });
+        }
+      },
+      maePostularDisabled: !maeV || s.maeCargando,
+      maePostularLabel: s.maeCargando ? "Enviando…" : "Enviar postulación",
+      maePostularStyle: "border:none;border-radius:999px;padding:15px 30px;font:700 15.5px Inter,sans-serif;" + (maeV && !s.maeCargando ? "background:var(--cta);color:#fff;cursor:pointer" : "background:var(--border);color:#94A3B8;cursor:not-allowed"),
+      maeMostrarError: !!s.maeError, maeError: s.maeError || "",
+
+      dashCargando: s.dashCargando,
+      dashError: s.dashError || "",
+      dashAceptError: s.dashAceptError || "",
+      dashMaestro: s.dashMaestro || {},
+      dashDisponible: !!(s.dashMaestro && s.dashMaestro.disponible !== false),
+      dashDisponibleLabel: (s.dashMaestro && s.dashMaestro.disponible === false) ? "Activarme" : "Disponible ✓",
+      dashDisponibleStyle: "flex:none;border:none;border-radius:999px;padding:8px 16px;font:700 12.5px Inter,sans-serif;cursor:pointer;" + ((s.dashMaestro && s.dashMaestro.disponible === false) ? "background:#94A3B8;color:#fff" : "background:var(--cta);color:#fff"),
+      dashToggleDisponible: async () => {
+        const actualmenteDisponible = !(s.dashMaestro && s.dashMaestro.disponible === false);
+        const nuevo = !actualmenteDisponible;
+        this.setState({ dashMaestro: { ...s.dashMaestro, disponible: nuevo } });
+        try {
+          await fetch(API_MAESTROS, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ maestroId: s.dashMaestroId, fields: { "Disponible": nuevo } }) });
+          if (nuevo) this._cargarDashboard(s.dashMaestroId);
+        } catch(e) { /* silent */ }
+      },
+      dashNoDisponible: !s.dashCargando && !s.dashError && !!(s.dashMaestro && s.dashMaestro.disponible === false),
+      dashSinLeads: !s.dashCargando && !s.dashError && !!(s.dashMaestro && s.dashMaestro.disponible !== false) && (s.dashLeads || []).length === 0,
+      dashLeads: (s.dashLeads || []).map((lead, i) => ({
+        ...lead,
+        urgenciaLabel: lead.urgencia === "hoy" ? "🔴 Urgente" : lead.urgencia === "semana" ? "🟡 Esta semana" : "🟢 Sin apuro",
+        oficioLabel: this._oficioLabel(lead.oficio),
+        aceptar: async () => {
+          this.setState({ dashLeads: this.state.dashLeads.filter((_, j) => j !== i), dashAceptError: null });
+          try {
+            const r = await fetch(API_ACEPTAR_LEAD, {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ leadId: lead.id, maestroId: s.dashMaestroId, accion: "aceptar" }),
+            });
+            const d = await r.json();
+            if (!r.ok) { this.setState({ dashAceptError: d.error || "No se pudo aceptar el trabajo." }); return; }
+            const maestro = this.state.dashMaestro || {};
+            const textoBienvenida = "¡Hola " + (lead.nombre_cliente || "cliente") + "! Soy " + (maestro.nombre || "tu maestro") + ". Vi tu solicitud y puedo ayudarte.";
+            fetch(API_MENSAJES, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ leadId: lead.id, texto: textoBienvenida, de: "maestro" }) }).catch(() => {});
+            this.setState({ pantalla: "chat", chatLeadId: lead.id, chatEsMaestro: true, chatClienteNombre: lead.nombre_cliente || "Cliente", chatMensajes: [], chatMaestroEscribiendo: false, chatCotMonto: "" });
+            window.scrollTo(0, 0);
+            this._cargarMensajes(lead.id);
+            this._iniciarPollMensajes(lead.id);
+          } catch(e) { this.setState({ dashAceptError: "Hubo un problema al aceptar." }); }
+        },
+        rechazar: () => {
+          this.setState({ dashLeads: this.state.dashLeads.filter((_, j) => j !== i) });
+          fetch(API_ACEPTAR_LEAD, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ leadId: lead.id, maestroId: s.dashMaestroId, accion: "rechazar" }) }).catch(() => {});
+        },
+      })),
+
+      chatMaestro: (() => {
+        if (s.chatEsMaestro) {
+          const nombre = s.chatClienteNombre || "Cliente";
+          return { iniciales: nombre.split(" ").filter(Boolean).map(w => w[0]).join("").substring(0, 2).toUpperCase() || "CL", nombre };
+        }
+        return s.cotMaestroAceptado || {};
+      })(),
+      chatMensajes: s.chatMensajes.map((m, i) => {
+        const esDeOtro = s.chatEsMaestro ? (m.de === "cliente") : (m.de === "maestro");
+        const maestroObj = s.cotMaestroAceptado || {};
+        const inicialesOtro = s.chatEsMaestro ? (s.chatClienteNombre || "C").charAt(0).toUpperCase() : (maestroObj.iniciales || "M");
+        const inicialesMio = s.chatEsMaestro ? (s.dashMaestro ? s.dashMaestro.iniciales : "M") : "C";
+        const tieneMonto = !!(m.monto && m.monto > 0);
+        return {
+          ...m,
+          esMaestro: esDeOtro && !tieneMonto,
+          esCliente: !esDeOtro && !tieneMonto,
+          esCotizacion: tieneMonto,
+          iniciales: esDeOtro ? inicialesOtro : inicialesMio,
+          cotMonto: tieneMonto ? ("$" + Number(m.monto).toLocaleString("es-CL")) : "",
+          cotMontoNum: m.monto || 0,
+          cotNoAceptada: tieneMonto && !s.chatEsMaestro,
+          aceptarCot: () => this.chatAceptarCot({ cotMontoNum: m.monto || 0 }),
+        };
+      }),
+      chatTexto: s.chatTexto,
+      chatSetTexto: (e) => this.setState({ chatTexto: e.target.value }),
+      chatEnviar: () => this.chatEnviar(),
+      chatEnviarKeydown: (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); this.chatEnviar(); } },
+      chatMaestroEscribiendo: s.chatMaestroEscribiendo,
+      chatAvisoTelefono: s.chatAvisoTelefono,
+      chatMostrarComposerCot: s.chatEsMaestro,
+      chatCotMonto: s.chatCotMonto,
+      chatSetCotMonto: (e) => this.setState({ chatCotMonto: e.target.value }),
+      chatEnviarCotizacion: () => this.chatEnviarCotizacion(),
+      chatEnviarCotDisabled: !s.chatCotMonto || s.chatEnviandoCot,
+      chatEnviarCotStyle: "border:none;border-radius:999px;padding:10px 18px;font:700 13.5px Inter,sans-serif;white-space:nowrap;" + (!s.chatCotMonto || s.chatEnviandoCot ? "background:var(--border);color:#94A3B8;cursor:not-allowed" : "background:var(--text);color:#fff;cursor:pointer"),
+
+      pagoMontoFormateado: s.pagoInfo ? ("$" + Number(s.pagoInfo.monto).toLocaleString("es-CL")) : "$0",
+      pagoProcesando: s.pagoProcesando,
+      pagarAhora: () => this.pagarAhora(),
+      pagoBtnLabel: s.pagoProcesando ? "Procesando…" : "Pagar con Mercado Pago",
+      pagoBtnStyle: "width:100%;border:none;border-radius:999px;padding:15px;font:700 15.5px Inter,sans-serif;" + (s.pagoProcesando ? "background:var(--border);color:#94A3B8;cursor:not-allowed" : "background:var(--cta);color:#fff;cursor:pointer"),
+      pagoMostrarError: !!s.pagoError, pagoError: s.pagoError || "",
+
+      resenaNoEnviada: !s.resenaEnviada,
+      resenaEnviada: s.resenaEnviada,
+      resenaEstrellasOpciones: [1, 2, 3, 4, 5].map(n => ({
+        pick: () => this.setState({ resenaEstrellas: n }),
+        color: n <= s.resenaEstrellas ? "#F5A623" : "#E4E5E7",
+      })),
+      resenaTexto: s.resenaTexto, resenaSetTexto: (e) => this.setState({ resenaTexto: e.target.value }),
+      resenaCargando: s.resenaCargando,
+      enviarResena: () => this.enviarResena(),
+      resenaBtnLabel: s.resenaCargando ? "Enviando…" : "Enviar calificación",
+      resenaBtnStyle: "width:100%;border:none;border-radius:999px;padding:14px;font:700 15px Inter,sans-serif;" + (!s.resenaEstrellas || s.resenaCargando ? "background:var(--border);color:#94A3B8;cursor:not-allowed" : "background:var(--cta);color:#fff;cursor:pointer"),
+
+      convCargando: s.convCargando,
+      convVacia: !s.convCargando && s.convLista.length === 0,
+      convLista: s.convLista.map(c => ({ ...c, abrirChat: () => this._abrirChatDesdeHistorial(c) })),
+      irADashboard: () => { const u = s.usuario; if (u && u.maestroId) this._cargarDashboard(u.maestroId); else this.irA("entrada"); },
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>JJS — Maestros de confianza en tu comuna</title>
+<meta name="description" content="Encuentra maestros verificados en Rancagua y alrededores. Recibe hasta 3 cotizaciones de gasfíteres, electricistas, pintores y más. Pago protegido.">
+<meta property="og:title" content="JJS — Maestros de confianza en tu comuna">
+<meta property="og:description" content="Recibe hasta 3 cotizaciones de maestros verificados de tu comuna. Compara y paga protegido.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#004E98;--secondary:#3A6EA5;--background:#F8FAFC;--surface:#FFFFFF;--text:#1E293B;--success:#16A34A;--muted:#64748B;--border:#E4E5E7;--cta:#4169E1;--cta-hover:#2E4AB1}
+body{margin:0;background:#ffffff;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+@keyframes jjsFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+/* ── Categorías: galería horizontal scroll-driven (pin+scrub) ── */
+.jjs-cat-spacer{position:relative;height:100vh;width:100vw;margin-left:calc(50% - 50vw)}
+.jjs-cat-pin{
+  position:sticky;top:var(--jjs-nav-h,0px);
+  display:flex;flex-direction:column;
+}
+.jjs-cat-heading{flex:none;padding:100px 0 20px;text-align:center}
+.jjs-cat-sticky{display:flex;align-items:flex-start;overflow:hidden}
+.jjs-cat-track{display:flex;gap:3px;will-change:transform;padding:4px 2px}
+.jjs-cat-slide{
+  flex:0 0 clamp(320px,42vw,620px);position:relative;overflow:hidden;border-radius:4px;
+  aspect-ratio:16/9;display:block;text-align:left;color:#fff;text-decoration:none;
+  border:none;background:var(--text);padding:0;margin:0;cursor:pointer;font:inherit;
+  transition:box-shadow .18s ease,transform .18s ease;
+}
+.jjs-cat-slide:hover{box-shadow:0 8px 24px rgba(30,41,59,.35);transform:translateY(-3px)}
+.jjs-cat-slide-bg{
+  position:absolute;inset:0;background-position:center;background-size:cover;
+  transition:transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.jjs-cat-slide:hover .jjs-cat-slide-bg{transform:scale(1.07)}
+.jjs-cat-scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(30,41,59,0) 55%,rgba(30,41,59,.8) 100%)}
+.jjs-cat-content{position:absolute;left:20px;right:20px;bottom:18px;pointer-events:none}
+.jjs-cat-title{font-family:Manrope,sans-serif;font-weight:700;font-size:17px;margin:0}
+.jjs-cat-caption{font-size:13.5px;color:rgba(255,255,255,.8);margin-top:5px}
+.jjs-cat-slide--plain{background:#fff;border:1px solid var(--border);color:var(--text);padding:24px}
+.jjs-cat-slide--plain .jjs-cat-scrim{display:none}
+.jjs-cat-slide--plain .jjs-cat-content{position:static;padding:0}
+.jjs-cat-slide--plain .jjs-cat-caption{color:var(--muted)}
+.jjs-cat-fallback .jjs-cat-spacer{height:auto!important}
+.jjs-cat-fallback .jjs-cat-pin{position:static;height:auto;display:block}
+.jjs-cat-fallback .jjs-cat-heading{padding:0 0 16px}
+.jjs-cat-fallback .jjs-cat-sticky{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.jjs-cat-fallback .jjs-cat-track{transform:none!important;padding:4px 20px 16px}
+.jjs-cat-fallback .jjs-cat-slide{scroll-snap-align:start}
+@media (prefers-reduced-motion: reduce){
+  .jjs-cat-spacer{height:auto!important}
+  .jjs-cat-pin{position:static;height:auto;display:block}
+  .jjs-cat-heading{padding:0 0 16px}
+  .jjs-cat-sticky{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .jjs-cat-track{transform:none!important;padding:4px 20px 16px}
+  .jjs-cat-slide{scroll-snap-align:start}
+}
+/* ── Navbar flotante ── */
+nav.jjs-nav-compact{padding:8px 20px !important}
+nav.jjs-nav-compact .jjs-nav-pill{height:52px !important}
+/* ── Cómo funciona: Spotlight Cards ── */
+.jjs-spot-card{
+  position:relative;overflow:hidden;border-radius:16px;padding:28px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);
+  transition:border-color .2s ease;
+}
+.jjs-spot-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(58,110,165,.28),transparent 70%);
+  opacity:0;transition:opacity .25s ease;
+}
+.jjs-spot-card:hover::before{opacity:1}
+.jjs-spot-card:hover{border-color:rgba(58,110,165,.45)}
+.jjs-spot-num{
+  position:absolute;top:6px;right:18px;font-family:Manrope,sans-serif;font-weight:800;
+  font-size:88px;line-height:1;color:var(--secondary);opacity:.15;z-index:0;pointer-events:none;
+}
+.jjs-spot-body{position:relative;z-index:1}
+.jjs-spot-quote{margin-top:18px;padding:12px 14px;border-left:3px solid var(--cta);background:var(--background);border-radius:0 8px 8px 0}
+</style>
+</helmet>
+
+<div style="font-family:Inter,system-ui,sans-serif;color:var(--text)">
+
+  <!-- NAVBAR -->
+  <nav data-screen-label="Navbar" style="position:sticky;top:0;z-index:50;padding:14px 20px;transition:padding .25s ease">
+    <div class="jjs-nav-pill" style="max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px;box-shadow:0 4px 24px rgba(0,78,152,.12),0 1px 3px rgba(0,78,152,.08);transition:height .25s ease">
+      <a href="JJS Home.dc.html" style="font-family:Manrope,sans-serif;font-weight:800;font-size:24px;color:var(--text);text-decoration:none;letter-spacing:-0.5px">JJS<span style="color:var(--cta)">.</span></a>
+      <div style="display:flex;align-items:center;gap:20px">
+        <a href="#categorias" style="color:var(--text);text-decoration:none;font-size:14.5px;font-weight:700" style-hover="color:var(--cta)">Categorías</a>
+        <a href="#como-funciona" style="color:var(--text);text-decoration:none;font-size:14.5px;font-weight:700" style-hover="color:var(--cta)">Cómo funciona</a>
+        <a href="JJS Cotizar.dc.html" style="color:var(--text);text-decoration:none;font-size:14.5px;font-weight:700" style-hover="color:var(--cta)">Pedir cotización</a>
+        <a href="JJS Maestros.dc.html" style="color:var(--text);text-decoration:none;font-size:14.5px;font-weight:700" style-hover="color:var(--cta)">Para maestros</a>
+        <span style="width:1px;height:16px;background:var(--border);display:inline-block"></span>
+        <a href="JJS Maestros.dc.html" style="font-size:14.5px;font-weight:700;color:var(--text);text-decoration:none" style-hover="color:var(--cta)">Ofrece tu servicio</a>
+        <a href="JJS Cotizar.dc.html" style="display:inline-flex;align-items:center;background:var(--cta);color:#fff;text-decoration:none;border-radius:999px;padding:10px 22px;font-size:14.5px;font-weight:700;transition:background .18s ease" style-hover="background:var(--cta-hover)">Pedir cotización</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header data-screen-label="Hero" style="background:var(--background);overflow:hidden;min-height:627px;display:flex;align-items:center">
+    <div style="max-width:1120px;margin:0 auto;padding:72px 20px 88px;display:flex;flex-wrap:wrap;align-items:center;gap:48px">
+      <div style="flex:1 1 480px;min-width:300px">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:300;font-size:clamp(28px,3.7vw,42px);line-height:1.15;letter-spacing:-0.6px;margin:0 0 18px;max-width:520px">El maestro correcto, de forma simple y segura.</h1>
+      </div>
+
+      <!-- Ticket stack -->
+      <div onMouseEnter="{{ fanOn }}" onMouseLeave="{{ fanOff }}" style="flex:0 1 420px;min-width:320px;position:relative;height:340px;margin:0 auto">
+        <div style="{{ ticketBack }}">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Cotización recibida</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:17px;margin-top:8px">Pintura living-comedor</div>
+          <div style="font-size:13.5px;color:var(--muted);margin-top:4px">Jorge S. · Pintor · Graneros</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><span style="color:#F5A623;font-size:14px;font-weight:600">★ 4,7</span><span style="font-family:Manrope,sans-serif;font-weight:800;font-size:19px">$180.000</span></div>
+        </div>
+        <div style="{{ ticketMid }}">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Cotización recibida</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:17px;margin-top:8px">Instalación de enchufes</div>
+          <div style="font-size:13.5px;color:var(--muted);margin-top:4px">Carla R. · Electricista SEC · Rancagua</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><span style="color:#F5A623;font-size:14px;font-weight:600">★ 4,8</span><span style="font-family:Manrope,sans-serif;font-weight:800;font-size:19px">$48.000</span></div>
+        </div>
+        <div style="{{ ticketFront }}">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Cotización recibida</div>
+            <span style="background:#E8EFFB;color:var(--cta-hover);border-radius:999px;padding:4px 10px;font-size:11.5px;font-weight:700">✓ Verificado</span>
+          </div>
+          <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:18px;margin-top:10px">Cambio de calefón</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
+            <span style="width:38px;height:38px;border-radius:50%;background:#E8EFFB;color:var(--cta-hover);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">LM</span>
+            <div>
+              <div style="font-size:14px;font-weight:600">Luis M. · Gasfíter</div>
+              <div style="font-size:12.5px;color:var(--muted)">Machalí · <span style="color:#F5A623;font-weight:600">★ 4,9</span> · 34 trabajos</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px dashed var(--border)">
+            <span style="font-size:12.5px;color:var(--muted)">Mano de obra + materiales</span>
+            <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:22px">$85.000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CATEGORÍAS -->
+  <section id="categorias" data-screen-label="Categorías" style="padding:0 0 88px">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px">
+      <div class="jjs-cat-spacer">
+        <div class="jjs-cat-pin">
+          <h2 class="jjs-cat-heading" style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-0.02em;margin:0;display:flex;flex-wrap:wrap;justify-content:center;column-gap:0.28em"><span class="jjs-blur-word" style="display:inline-block;opacity:0;filter:blur(10px);transform:translateY(-50px)">¿Qué</span><span class="jjs-blur-word" style="display:inline-block;opacity:0;filter:blur(10px);transform:translateY(-50px)">necesitas</span><span class="jjs-blur-word" style="display:inline-block;opacity:0;filter:blur(10px);transform:translateY(-50px)">arreglar</span><span class="jjs-blur-word" style="display:inline-block;opacity:0;filter:blur(10px);transform:translateY(-50px)">hoy?</span></h2>
+          <div class="jjs-cat-sticky">
+            <div class="jjs-cat-track">
+              <sc-for list="{{ categorias }}" as="cat" hint-placeholder-count="6">
+                <a href="{{ cat.href }}" class="{{ cat.slideClass }}">
+                  <span class="jjs-cat-slide-bg" style="{{ cat.bgStyle }}"></span>
+                  <span class="jjs-cat-scrim"></span>
+                  <span class="jjs-cat-content">
+                    <div class="jjs-cat-title">{{ cat.nombre }}</div>
+                    <div class="jjs-cat-caption">{{ cat.ejemplos }}</div>
+                  </span>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+          <p class="jjs-cat-subtitle" style="color:var(--text);font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-0.02em;text-align:center;margin:16px 0 0">Maestros verificados en los oficios que más se piden.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section id="como-funciona" data-screen-label="Cómo funciona" style="background:var(--text);color:#fff;padding:88px 0">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px">
+      <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-0.02em;margin:0 0 8px;max-width:640px">Deja de preguntar “¿alguien conoce un maestro?” en Facebook</h2>
+      <p style="color:rgba(255,255,255,.65);font-size:16px;margin:0 0 48px">Tres pasos, todo por escrito, sin llamadas incómodas.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px">
+        <sc-for list="{{ pasos }}" as="paso" hint-placeholder-count="3">
+          <div class="jjs-spot-card" onMouseMove="{{ spotlightMove }}" style="--mx:50%;--my:50%">
+            <span class="jjs-spot-num">0{{ paso.n }}</span>
+            <div class="jjs-spot-body">
+              <h3 style="font-family:Manrope,sans-serif;font-weight:700;font-size:19px;color:#fff;margin:0 0 8px">{{ paso.titulo }}</h3>
+              <p style="font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.65);margin:0">{{ paso.texto }}</p>
+              <div class="jjs-spot-quote">
+                <p style="font-size:13.5px;line-height:1.5;color:var(--text);margin:0;font-style:italic">“{{ paso.cita }}”</p>
+                <p style="font-size:12px;font-weight:700;color:var(--muted);margin:6px 0 0">{{ paso.autor }}</p>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA MAESTROS -->
+  <section data-screen-label="Para maestros" style="background:#E8EFFB;padding:88px 0">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap;gap:48px;align-items:center">
+      <div style="flex:1 1 460px;min-width:300px">
+        <div style="font-size:13px;font-weight:700;color:var(--cta-hover);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Para maestros</div>
+        <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,36px);letter-spacing:-0.02em;margin:0 0 24px;max-width:520px">Deja de invertir horas en cotizaciones que no generan resultados. Convierte más oportunidades en clientes con un proceso de venta inteligente.</h2>
+        <ul style="list-style:none;margin:0 0 28px;padding:0;display:grid;gap:16px">
+          <li style="display:flex;gap:12px;font-size:15.5px;line-height:1.55"><span style="width:22px;height:22px;border-radius:50%;background:var(--cta);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none;margin-top:2px">✓</span><span><strong style="font-weight:700">Plan Básico gratis</strong> — 12% de comisión solo cuando cierras un trabajo. Cero riesgo.</span></li>
+          <li style="display:flex;gap:12px;font-size:15.5px;line-height:1.55"><span style="width:22px;height:22px;border-radius:50%;background:var(--cta);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none;margin-top:2px">✓</span><span><strong style="font-weight:700">Plan Premium $29.990/mes</strong> — comisión 6% + prioridad para cotizar primero.</span></li>
+          <li style="display:flex;gap:12px;font-size:15.5px;line-height:1.55"><span style="width:22px;height:22px;border-radius:50%;background:var(--cta);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none;margin-top:2px">✓</span><span><strong style="font-weight:700">Pago garantizado</strong> a través de la plataforma, sin perseguir clientes.</span></li>
+        </ul>
+        <a href="JJS Maestros.dc.html" style="display:inline-flex;background:var(--cta);color:#fff;text-decoration:none;border-radius:999px;padding:14px 30px;font:600 15.5px Inter,sans-serif;transition:background .18s ease" style-hover="background:var(--cta-hover)">Unirme como maestro</a>
+      </div>
+      <div style="flex:0 1 400px;min-width:300px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 8px 30px rgba(15,23,42,.07)">
+        <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:16px;margin-bottom:20px">Simulación de ingresos · Plan Básico</div>
+        <sc-for list="{{ simulacion }}" as="bar" hint-placeholder-count="3">
+          <div style="margin-bottom:18px">
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:7px"><span style="color:var(--muted)">{{ bar.label }}</span><span style="font-weight:700">{{ bar.valor }}</span></div>
+            <div style="height:8px;border-radius:999px;background:var(--background);overflow:hidden"><div style="{{ bar.fillStyle }}"></div></div>
+          </div>
+        </sc-for>
+        <div style="font-size:12.5px;color:#94A3B8;margin-top:6px">Estimación referencial para un maestro activo en Rancagua.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section data-screen-label="CTA final" style="padding:96px 0;text-align:center">
+    <div style="max-width:680px;margin:0 auto;padding:0 20px">
+      <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,42px);letter-spacing:-0.02em;margin:0 0 14px">Tu casa merece un trabajo bien hecho</h2>
+      <p style="color:var(--muted);font-size:17px;margin:0 0 30px">Cuéntanos qué necesitas y compara hasta 3 cotizaciones. Gratis, sin compromiso.</p>
+      <a href="JJS Cotizar.dc.html" style="display:inline-flex;background:var(--cta);color:#fff;text-decoration:none;border-radius:999px;padding:17px 38px;font:700 17px Inter,sans-serif;transition:background .18s ease" style-hover="background:var(--cta-hover)">Pedir 3 cotizaciones</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer data-screen-label="Footer" style="background:var(--primary);padding:40px 0">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:20px;color:#fff">JJS<span style="color:rgba(255,255,255,.7)">.</span></span>
+          <span style="font-size:13px;color:rgba(255,255,255,.65)">© 2026 · Rancagua, Chile</span>
+        </div>
+        <div style="display:flex;gap:24px;font-size:13.5px">
+          <a href="#" style="color:rgba(255,255,255,.65);text-decoration:none" style-hover="color:#fff">Términos</a>
+          <a href="#" style="color:rgba(255,255,255,.65);text-decoration:none" style-hover="color:#fff">Privacidad</a>
+          <a href="#" style="color:rgba(255,255,255,.65);text-decoration:none" style-hover="color:#fff">Contacto</a>
+        </div>
+      </div>
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);font-size:12.5px;color:rgba(255,255,255,.5)">Maestros verificados con entrevista personal · Rancagua, Chile</div>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="{{ waLink }}" target="_blank" aria-label="Escríbenos por WhatsApp" style="position:fixed;bottom:22px;right:22px;z-index:60;width:56px;height:56px;border-radius:50%;background:var(--cta);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(65,105,225,.4);text-decoration:none;transition:transform .18s ease" style-hover="transform:scale(1.08)">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.6 13.8L3 21l4.4-1.3A9 9 0 1 0 12 3z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="8.6" cy="12" r="1.1" fill="#fff"></circle><circle cx="12" cy="12" r="1.1" fill="#fff"></circle><circle cx="15.4" cy="12" r="1.1" fill="#fff"></circle></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;prelaunch&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;,&quot;description&quot;:&quot;Modo pre-lanzamiento: marca perfiles como ejemplos y oculta cifras de trabajos cerrados&quot;},&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;+56 9 3905 4197&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;,&quot;description&quot;:&quot;Número WhatsApp (formato 569XXXXXXXX)&quot;}}">
+class Component extends DCLogic {
+  state = { fan: false };
+
+  ticket(base, rest, fanned) {
+    return "position:absolute;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(15,23,42,.08);transition:transform .35s cubic-bezier(.2,.8,.2,1);" + base + "transform:" + (this.state.fan ? fanned : rest);
+  }
+  catBgStyle(bg) {
+    if (!bg) return "";
+    const name = bg.split("/").pop().replace(/\.png$/, "");
+    const w1 = "./img/webp/" + name + "-480.webp";
+    const w2 = "./img/webp/" + name + "-960.webp";
+    return "background:center/cover no-repeat -webkit-image-set(url('" + w1 + "') 1x, url('" + w2 + "') 2x);"
+         + "background:center/cover no-repeat image-set(url('" + w1 + "') 1x, url('" + w2 + "') 2x)";
+  }
+  _spotlightMove(e) {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    e.currentTarget.style.setProperty("--my", (e.clientY - r.top) + "px");
+  }
+  _initCatGallery() {
+    this._teardownCatGallery();
+    const section = document.getElementById("categorias");
+    if (!section) return;
+    const pin = section.querySelector(".jjs-cat-pin");
+    const sticky = section.querySelector(".jjs-cat-sticky");
+    const track = section.querySelector(".jjs-cat-track");
+    const spacer = section.querySelector(".jjs-cat-spacer");
+    if (!pin || !sticky || !track || !spacer) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ready = !!(window.gsap && window.ScrollTrigger);
+    if (reduce || !ready) {
+      section.classList.add("jjs-cat-fallback");
+      return;
+    }
+    section.classList.remove("jjs-cat-fallback");
+    gsap.registerPlugin(ScrollTrigger);
+
+    const distance = () => Math.max(0, track.scrollWidth - sticky.clientWidth);
+    const recompute = () => {
+      spacer.style.height = (pin.clientHeight + distance()) + "px";
+    };
+    recompute();
+
+    this._catTween = gsap.to(track, {
+      x: () => -distance(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: spacer,
+        start: "top top",
+        end: () => "+=" + distance(),
+        scrub: 1,
+        pin: false,
+        invalidateOnRefresh: true,
+        onRefresh: recompute,
+      },
+    });
+  }
+  _teardownCatGallery() {
+    if (this._catTween) {
+      const st = this._catTween.scrollTrigger;
+      this._catTween.kill();
+      if (st) st.kill();
+      this._catTween = null;
+    }
+  }
+  _initSubtitleSplit() {
+    const el = document.querySelector(".jjs-cat-subtitle");
+    if (!el || !window.gsap || !window.SplitText || !window.ScrollTrigger) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    if (el._splitInstance) {
+      try { el._splitInstance.revert(); } catch (e) {}
+      el._splitInstance = null;
+    }
+    ScrollTrigger.getAll().forEach((st) => { if (st.trigger === el) st.kill(); });
+
+    const run = () => {
+      const split = new SplitText(el, {
+        type: "chars",
+        smartWrap: true,
+        charsClass: "split-char",
+        reduceWhiteSpace: false,
+      });
+      el._splitInstance = split;
+      gsap.fromTo(split.chars,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.03,
+          scrollTrigger: { trigger: el, start: "top 90%", once: true },
+        }
+      );
+    };
+    if (document.fonts && document.fonts.status !== "loaded") {
+      document.fonts.ready.then(run);
+    } else {
+      run();
+    }
+  }
+  _initHeadingBlur() {
+    const words = document.querySelectorAll("#categorias .jjs-blur-word");
+    if (!words.length || !window.gsap || !window.ScrollTrigger) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      gsap.set(words, { opacity: 1, filter: "blur(0px)", y: 0 });
+      return;
+    }
+    const heading = words[0].closest(".jjs-cat-heading");
+    ScrollTrigger.getAll().forEach((st) => { if (st.trigger === heading) st.kill(); });
+    gsap.fromTo(words,
+      { filter: "blur(10px)", opacity: 0, y: -50 },
+      {
+        keyframes: [
+          { filter: "blur(5px)", opacity: 0.5, y: 5 },
+          { filter: "blur(0px)", opacity: 1, y: 0 },
+        ],
+        duration: 0.7,
+        ease: "none",
+        stagger: 0.2,
+        scrollTrigger: { trigger: heading, start: "top 90%", once: true },
+      }
+    );
+  }
+  componentDidMount() {
+    this._initNavHeight();
+    this._initNavCompact();
+    this._initCatGallery();
+    this._initSubtitleSplit();
+    this._initHeadingBlur();
+  }
+  componentWillUnmount() {
+    this._teardownCatGallery();
+  }
+
+  _initNavHeight() {
+    const navEl = document.querySelector("nav");
+    if (!navEl) return;
+    const setH = () => {
+      document.documentElement.style.setProperty("--jjs-nav-h", navEl.getBoundingClientRect().height + "px");
+    };
+    setH();
+    if (this._navRO) this._navRO.disconnect();
+    this._navRO = new ResizeObserver(setH);
+    this._navRO.observe(navEl);
+  }
+
+  _initNavCompact() {
+    const navEl = document.querySelector("nav");
+    if (!navEl || !window.gsap || !window.ScrollTrigger) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.registerPlugin(ScrollTrigger);
+    if (this._navCompactST) this._navCompactST.kill();
+    this._navCompactST = ScrollTrigger.create({
+      start: "top -40",
+      end: 99999,
+      toggleClass: { targets: navEl, className: "jjs-nav-compact" },
+    });
+  }
+
+  renderVals() {
+    const prelaunch = this.props.prelaunch ?? true;
+    const wa = (this.props.whatsapp ?? "56912345678").replace(/\D/g, "");
+    return {
+      prelaunch,
+      waLink: "https://wa.me/" + wa + "?text=" + encodeURIComponent("Hola JJS, necesito un maestro"),
+      fanOn: () => this.setState({ fan: true }),
+      fanOff: () => this.setState({ fan: false }),
+      ticketBack: this.ticket("top:56px;", "rotate(-6deg) translateY(0)", "rotate(-10deg) translate(-46px,-26px)"),
+      ticketMid: this.ticket("top:28px;", "rotate(4deg) translateY(0)", "rotate(9deg) translate(46px,-14px)"),
+      ticketFront: this.ticket("top:0;box-shadow:0 18px 44px rgba(15,23,42,.14);", "rotate(-1deg)", "rotate(0deg) translateY(6px)"),
+      categorias: [
+        { nombre: "Gasfitería", ejemplos: "Fugas, llaves, calefón", href: "JJS Cotizar.dc.html#gasfiteria", bgStyle: this.catBgStyle("./img/gasfiteria.png"), slideClass: "jjs-cat-slide" },
+        { nombre: "Electricidad", ejemplos: "Enchufes, tableros, certificación SEC", href: "JJS Cotizar.dc.html#electricidad", bgStyle: this.catBgStyle("./img/electricidad.png"), slideClass: "jjs-cat-slide" },
+        { nombre: "Pintura", ejemplos: "Interiores, fachadas, empaste", href: "JJS Cotizar.dc.html#pintura", bgStyle: this.catBgStyle("./img/pintura.png"), slideClass: "jjs-cat-slide" },
+        { nombre: "Cerrajería", ejemplos: "Aperturas, chapas, copias de llave", href: "JJS Cotizar.dc.html#cerrajeria", bgStyle: this.catBgStyle("./img/cerrajeria.png"), slideClass: "jjs-cat-slide" },
+        { nombre: "Carpintería", ejemplos: "Muebles, puertas, terrazas", href: "JJS Cotizar.dc.html#carpinteria", bgStyle: this.catBgStyle("./img/carpinteria.png"), slideClass: "jjs-cat-slide" },
+        { nombre: "Ver todos los oficios", ejemplos: "¿No encuentras el tuyo? Cuéntanos igual", href: "JJS Cotizar.dc.html", bgStyle: "", slideClass: "jjs-cat-slide jjs-cat-slide--plain" },
+      ],
+      pasos: [
+        { n: "1", titulo: "Describe tu trabajo", texto: "Cuéntanos qué necesitas y sube fotos. Toma menos de 2 minutos.", cita: "Subí 3 fotos desde el celular y en segundos quedó enviado.", autor: "Valentina R., Rancagua" },
+        { n: "2", titulo: "Recibe hasta 3 cotizaciones", texto: "Maestros verificados de tu comuna te cotizan con precio y plazo por escrito.", cita: "En menos de una hora tenía dos propuestas con precio exacto.", autor: "Jorge M., Machalí" },
+        { n: "3", titulo: "Elige, agenda y paga seguro", texto: "Compara calificaciones reales. El pago se libera solo cuando el trabajo termina.", cita: "Pagué protegido y el trabajo quedó perfecto. Sin sorpresas.", autor: "Ana P., Graneros" },
+      ],
+      spotlightMove: (e) => this._spotlightMove(e),
+      simulacion: [
+        { label: "Cotizaciones al mes", valor: "12", fillStyle: this.fill(60) },
+        { label: "Trabajos cerrados", valor: "5", fillStyle: this.fill(42) },
+        { label: "Ingreso estimado", valor: "$420.000", fillStyle: this.fill(78) },
+      ],
+    };
+  }
+
+  fill(pct) {
+    return "height:100%;border-radius:999px;background:var(--cta);width:" + pct + "%";
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Para maestros — JJS</title>
+<meta name="description" content="Únete como maestro verificado. Recibe trabajos de tu oficio y comuna. Plan Básico gratis, solo pagas comisión al cerrar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ffffff;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+</style>
+</helmet>
+
+<div style="font-family:Inter,system-ui,sans-serif;color:#0F172A">
+
+  <!-- NAVBAR -->
+  <nav data-screen-label="Navbar" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #E4E5E7">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <a href="JJS Home.dc.html" style="font-family:Manrope,sans-serif;font-weight:800;font-size:24px;color:#0F172A;text-decoration:none;letter-spacing:-0.5px">JJS<span style="color:#4169E1">.</span></a>
+      <div style="display:flex;align-items:center;gap:28px;font-size:14.5px;font-weight:500;color:#586074">
+        <a href="#planes" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Planes</a>
+        <a href="#como" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Cómo funciona</a>
+        <a href="#faq" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Preguntas</a>
+      </div>
+      <a href="#postular" style="display:inline-flex;background:#4169E1;color:#fff;text-decoration:none;border-radius:999px;padding:10px 22px;font-size:14.5px;font-weight:600;transition:background .18s ease" style-hover="background:#2E4AB1">Postular ahora</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header data-screen-label="Hero maestros" style="background:#F6F8F7">
+    <div style="max-width:1120px;margin:0 auto;padding:80px 20px;text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#E8EFFB;color:#2E4AB1;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600">Para maestros de Rancagua y alrededores</div>
+      <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(32px,4.4vw,50px);line-height:1.1;letter-spacing:-1.1px;margin:20px auto 16px;max-width:680px">Clientes listos para contratar, sin gastar un peso en publicidad</h1>
+      <p style="font-size:17.5px;line-height:1.6;color:#586074;margin:0 auto 32px;max-width:540px">Te enviamos trabajos de tu comuna y tu oficio. Tú decides cuáles cotizar. Solo pagas comisión cuando cierras.</p>
+      <a href="#postular" style="display:inline-flex;background:#4169E1;color:#fff;text-decoration:none;border-radius:999px;padding:16px 34px;font:700 16px Inter,sans-serif;transition:background .18s ease" style-hover="background:#2E4AB1">Unirme como maestro</a>
+    </div>
+  </header>
+
+  <!-- PLANES -->
+  <section id="planes" data-screen-label="Planes" style="padding:88px 0">
+    <div style="max-width:920px;margin:0 auto;padding:0 20px">
+      <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,34px);letter-spacing:-0.6px;margin:0 0 8px;text-align:center">Dos planes, cero letra chica</h2>
+      <p style="color:#586074;font-size:16px;margin:0 0 44px;text-align:center">Parte gratis. Cambia o sal cuando quieras.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:stretch">
+        <div style="border:1px solid #E4E5E7;border-radius:20px;padding:32px;display:flex;flex-direction:column">
+          <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:18px">Plan Básico</div>
+          <div style="margin:14px 0 4px"><span style="font-family:Manrope,sans-serif;font-weight:800;font-size:38px">Gratis</span></div>
+          <div style="font-size:14px;color:#586074;margin-bottom:24px">12% de comisión solo al cerrar trabajo</div>
+          <ul style="list-style:none;margin:0 0 28px;padding:0;display:grid;gap:12px;font-size:14.5px;flex:1">
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Perfil verificado con calificaciones</li>
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Acceso a trabajos de tu comuna y oficio</li>
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Pago garantizado por la plataforma</li>
+            <li style="display:flex;gap:10px;color:#94A3B8"><span style="font-weight:700">—</span>Cotizas después de los Premium</li>
+            <li style="display:flex;gap:10px;color:#94A3B8"><span style="font-weight:700">—</span>Sin destaque en resultados</li>
+          </ul>
+          <a href="#postular" style="display:block;text-align:center;border:2px solid #0F172A;color:#0F172A;text-decoration:none;border-radius:999px;padding:13px 24px;font:600 15px Inter,sans-serif;transition:background .18s ease,color .18s ease" style-hover="background:#0F172A;color:#fff">Partir gratis</a>
+        </div>
+        <div style="border:2px solid #4169E1;border-radius:20px;padding:32px;display:flex;flex-direction:column;position:relative;background:#fff;box-shadow:0 12px 36px rgba(65,105,225,.12)">
+          <span style="position:absolute;top:-13px;left:32px;background:#4169E1;color:#fff;border-radius:999px;padding:5px 14px;font:700 12px Inter,sans-serif">Recomendado</span>
+          <div style="font-family:Manrope,sans-serif;font-weight:700;font-size:18px">Plan Premium</div>
+          <div style="margin:14px 0 4px"><span style="font-family:Manrope,sans-serif;font-weight:800;font-size:38px">$29.990</span><span style="font-size:15px;color:#586074">/mes</span></div>
+          <div style="font-size:14px;color:#586074;margin-bottom:24px">Comisión rebajada a 6% al cerrar trabajo</div>
+          <ul style="list-style:none;margin:0 0 28px;padding:0;display:grid;gap:12px;font-size:14.5px;flex:1">
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Todo lo del Plan Básico</li>
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span><span><strong style="font-weight:600">Prioridad:</strong> cotizas antes que los demás</span></li>
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Perfil destacado en tu categoría</li>
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Comisión 6% en vez de 12%</li>
+            <li style="display:flex;gap:10px"><span style="color:#4169E1;font-weight:700">✓</span>Se paga solo con ~2 trabajos al mes</li>
+          </ul>
+          <a href="#postular" style="display:block;text-align:center;background:#4169E1;color:#fff;text-decoration:none;border-radius:999px;padding:13px 24px;font:600 15px Inter,sans-serif;transition:background .18s ease" style-hover="background:#2E4AB1">Quiero Premium</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO TE LLEGAN LOS TRABAJOS -->
+  <section id="como" data-screen-label="Cómo te llegan los trabajos" style="background:#F6F8F7;padding:88px 0">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px">
+      <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,34px);letter-spacing:-0.6px;margin:0 0 44px">Cómo te llegan los trabajos</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px">
+        <sc-for list="{{ pasosMaestro }}" as="paso" hint-placeholder-count="3">
+          <div style="background:#fff;border:1px solid #E4E5E7;border-radius:16px;padding:28px">
+            <span style="width:44px;height:44px;border-radius:50%;background:#4169E1;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:Manrope,sans-serif;font-weight:800;font-size:18px">{{ paso.n }}</span>
+            <h3 style="font-family:Manrope,sans-serif;font-weight:700;font-size:18px;margin:18px 0 8px">{{ paso.titulo }}</h3>
+            <p style="font-size:14.5px;line-height:1.6;color:#586074;margin:0">{{ paso.texto }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" data-screen-label="FAQ" style="padding:88px 0">
+    <div style="max-width:720px;margin:0 auto;padding:0 20px">
+      <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,34px);letter-spacing:-0.6px;margin:0 0 36px">Preguntas frecuentes</h2>
+      <div style="display:grid;gap:10px">
+        <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="6">
+          <div style="border:1px solid #E4E5E7;border-radius:14px;overflow:hidden;background:#fff">
+            <button onClick="{{ faq.toggle }}" aria-expanded="{{ faq.abierta }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;background:transparent;border:none;padding:18px 20px;font:600 15.5px Inter,sans-serif;color:#0F172A;text-align:left;cursor:pointer">
+              {{ faq.q }}
+              <span style="{{ faq.chevron }}">▾</span>
+            </button>
+            <sc-if value="{{ faq.abierta }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 20px 18px;font-size:14.5px;line-height:1.65;color:#586074">{{ faq.a }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSTULACIÓN -->
+  <section id="postular" data-screen-label="Postulación" style="background:#E8EFFB;padding:88px 0">
+    <div style="max-width:640px;margin:0 auto;padding:0 20px">
+      <sc-if value="{{ noEnviado }}" hint-placeholder-val="{{ true }}">
+        <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,3vw,34px);letter-spacing:-0.6px;margin:0 0 8px">Postula en 2 minutos</h2>
+        <p style="color:#586074;font-size:15.5px;margin:0 0 28px">Te contactamos por WhatsApp para la verificación de identidad.</p>
+        <div style="background:#fff;border:1px solid #E4E5E7;border-radius:20px;padding:30px;display:grid;gap:14px">
+          <input type="text" value="{{ nombre }}" onChange="{{ setNombre }}" placeholder="Nombre completo" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;outline:none" style-focus="border-color:#4169E1">
+          <select value="{{ oficio }}" onChange="{{ setOficio }}" aria-label="Oficio" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:500 15px Inter,sans-serif;color:#0F172A;background:#fff;outline:none;cursor:pointer" style-focus="border-color:#4169E1">
+            <option value="">Tu oficio</option>
+            <option value="gasfiteria">Gasfíter</option>
+            <option value="electricidad">Electricista</option>
+            <option value="pintura">Pintor</option>
+            <option value="cerrajeria">Cerrajero</option>
+            <option value="carpinteria">Carpintero</option>
+            <option value="otro">Otro</option>
+          </select>
+          <select value="{{ comuna }}" onChange="{{ setComuna }}" aria-label="Comuna" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:500 15px Inter,sans-serif;color:#0F172A;background:#fff;outline:none;cursor:pointer" style-focus="border-color:#4169E1">
+            <option value="">Comuna donde trabajas</option>
+            <option value="Rancagua">Rancagua</option>
+            <option value="Machalí">Machalí</option>
+            <option value="Graneros">Graneros</option>
+            <option value="Olivar">Olivar</option>
+            <option value="Doñihue">Doñihue</option>
+          </select>
+          <input type="number" value="{{ experiencia }}" onChange="{{ setExperiencia }}" placeholder="Años de experiencia" min="0" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;outline:none" style-focus="border-color:#4169E1">
+          <input type="tel" value="{{ whatsapp }}" onChange="{{ setWhatsapp }}" placeholder="WhatsApp (+56 9 …)" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;outline:none" style-focus="border-color:#4169E1">
+          <sc-if value="{{ esElectricista }}" hint-placeholder-val="{{ false }}">
+            <label style="display:flex;gap:12px;align-items:flex-start;background:#F6F8F7;border-radius:12px;padding:16px;font-size:14px;line-height:1.5;cursor:pointer">
+              <input type="checkbox" checked="{{ sec }}" onChange="{{ setSec }}" style="margin-top:2px;accent-color:#4169E1;width:18px;height:18px">
+              <span>Cuento con <strong style="font-weight:600">certificación SEC vigente</strong> (clase D o superior). La validaremos en la verificación.</span>
+            </label>
+          </sc-if>
+          <button onClick="{{ postular }}" disabled="{{ postularDisabled }}" style="{{ postularStyle }}">{{ postularLabel }}</button>
+          <sc-if value="{{ mostrarError }}" hint-placeholder-val="{{ false }}">
+            <p style="color:#EF4444;font-size:13px;text-align:center;margin:4px 0 0">{{ error }}</p>
+          </sc-if>
+          <div style="font-size:12.5px;color:#94A3B8;text-align:center">Sin costo de inscripción. Verificación de identidad obligatoria.</div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ enviado }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #E4E5E7;border-radius:20px;padding:44px 30px;text-align:center">
+          <div style="width:70px;height:70px;border-radius:50%;background:#E8EFFB;color:#4169E1;display:inline-flex;align-items:center;justify-content:center;font-size:30px;font-weight:800">✓</div>
+          <h2 style="font-family:Manrope,sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.6px;margin:20px 0 10px">¡Postulación recibida!</h2>
+          <p style="color:#586074;font-size:15.5px;line-height:1.6;margin:0 auto 28px;max-width:380px">Te escribiremos por <strong style="color:#0F172A">WhatsApp en 1–2 días hábiles</strong> para coordinar la verificación de identidad y activar tu perfil.</p>
+          <div style="text-align:left;background:#F6F8F7;border-radius:14px;padding:20px;max-width:380px;margin:0 auto 24px">
+            <div style="font-size:12px;font-weight:700;color:#586074;text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px">¿Qué sigue?</div>
+            <div style="display:grid;gap:12px">
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:#586074"><span style="width:22px;height:22px;border-radius:50%;background:#4169E1;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">1</span>Revisamos tu postulación (1–2 días hábiles)</div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:#586074"><span style="width:22px;height:22px;border-radius:50%;background:#4169E1;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">2</span>Te contactamos por WhatsApp para verificar tu identidad</div>
+              <div style="display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:#586074"><span style="width:22px;height:22px;border-radius:50%;background:#4169E1;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none">3</span>Activamos tu perfil y empiezas a recibir trabajos</div>
+            </div>
+          </div>
+          <a href="JJS Home.dc.html" style="display:inline-flex;background:#0F172A;color:#fff;text-decoration:none;border-radius:999px;padding:13px 26px;font:600 14.5px Inter,sans-serif;transition:background .18s ease" style-hover="background:#4169E1">Volver al inicio</a>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer data-screen-label="Footer" style="border-top:1px solid #E4E5E7;padding:36px 0">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+      <div style="display:flex;align-items:baseline;gap:14px">
+        <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:20px">JJS<span style="color:#4169E1">.</span></span>
+        <span style="font-size:13px;color:#586074">© 2026 · Rancagua, Chile</span>
+      </div>
+      <div style="display:flex;gap:24px;font-size:13.5px">
+        <a href="#" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Términos</a>
+        <a href="#" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Privacidad</a>
+        <a href="#" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="{{ waLink }}" target="_blank" aria-label="Escríbenos por WhatsApp" style="position:fixed;bottom:22px;right:22px;z-index:60;width:56px;height:56px;border-radius:50%;background:#4169E1;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(65,105,225,.4);text-decoration:none;transition:transform .18s ease" style-hover="transform:scale(1.08)">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.6 13.8L3 21l4.4-1.3A9 9 0 1 0 12 3z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="8.6" cy="12" r="1.1" fill="#fff"></circle><circle cx="12" cy="12" r="1.1" fill="#fff"></circle><circle cx="15.4" cy="12" r="1.1" fill="#fff"></circle></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;56912345678&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;,&quot;description&quot;:&quot;Número WhatsApp del canal de soporte (formato 569XXXXXXXX)&quot;}}">
+class Component extends DCLogic {
+  state = { faqAbierta: -1, enviado: false, cargando: false, error: null, nombre: "", oficio: "", comuna: "", experiencia: "", whatsapp: "", sec: false };
+
+  FAQS = [
+    { q: "¿Cómo y cuándo me pagan?", a: "El cliente paga por la plataforma al agendar. El dinero queda protegido y se libera a tu cuenta 24 horas después de que el cliente confirma que el trabajo terminó. Transferencia directa a tu cuenta bancaria." },
+    { q: "¿Qué pasa si el cliente no queda conforme?", a: "Se abre un caso de mediación: revisamos fotos, la cotización y lo conversado en la plataforma. Si el trabajo se hizo según lo cotizado, se libera tu pago. Por eso todo queda por escrito." },
+    { q: "¿Cuáles son los requisitos de verificación?", a: "Cédula de identidad vigente, verificación facial y al menos 2 referencias de trabajos anteriores. El proceso toma 1–2 días hábiles y es gratis." },
+    { q: "¿Necesito certificación SEC?", a: "Solo si eres electricista y realizarás trabajos que la exigen (tableros, instalaciones declarables). Validamos tu licencia SEC en la verificación y tu perfil muestra el badge correspondiente." },
+    { q: "¿Puedo salir del plan cuando quiera?", a: "Sí. El Plan Básico no tiene contrato. El Premium se cancela desde tu perfil y rige hasta el fin del mes pagado. Sin multas ni permanencia." },
+    { q: "¿Estoy obligado a cotizar todo lo que me llega?", a: "No. Te avisamos de los trabajos que calzan con tu oficio y comuna; tú eliges cuáles cotizar. No cotizar no afecta tu calificación." },
+  ];
+
+  valido() {
+    const s = this.state;
+    const digits = s.whatsapp.replace(/\D/g, "");
+    const waOk = (digits.length === 9 && digits[0] === "9") || (digits.length === 11 && digits.startsWith("569"));
+    return s.nombre.trim().length >= 2 && !!s.oficio && !!s.comuna && waOk;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const wa = (this.props.whatsapp ?? "56912345678").replace(/\D/g, "");
+    const valido = this.valido();
+    return {
+      pasosMaestro: [
+        { n: "1", titulo: "Te llega un aviso", texto: "Un cliente de tu comuna publica un trabajo de tu oficio, con descripción y fotos. Te avisamos por WhatsApp y la app." },
+        { n: "2", titulo: "Cotizas si te interesa", texto: "Ves el detalle completo antes de cotizar. Envías precio y plazo por escrito. Máximo 3 maestros cotizan por trabajo." },
+        { n: "3", titulo: "Cierras y cobras seguro", texto: "Si el cliente te elige, agendan por la plataforma. El pago queda retenido y se libera cuando el trabajo termina." },
+      ],
+      faqs: this.FAQS.map((f, i) => ({
+        ...f,
+        abierta: s.faqAbierta === i,
+        toggle: () => this.setState({ faqAbierta: s.faqAbierta === i ? -1 : i }),
+        chevron: "color:#586074;flex:none;transition:transform .2s ease;transform:rotate(" + (s.faqAbierta === i ? 180 : 0) + "deg)",
+      })),
+      noEnviado: !s.enviado,
+      enviado: s.enviado,
+      nombre: s.nombre, setNombre: (e) => this.setState({ nombre: e.target.value }),
+      oficio: s.oficio, setOficio: (e) => this.setState({ oficio: e.target.value }),
+      comuna: s.comuna, setComuna: (e) => this.setState({ comuna: e.target.value }),
+      experiencia: s.experiencia, setExperiencia: (e) => this.setState({ experiencia: e.target.value }),
+      whatsapp: s.whatsapp, setWhatsapp: (e) => this.setState({ whatsapp: e.target.value }),
+      sec: s.sec, setSec: (e) => this.setState({ sec: e.target.checked }),
+      esElectricista: s.oficio === "electricidad",
+      postular: async () => {
+        if (!valido || s.cargando) return;
+        this.setState({ cargando: true, error: null });
+        try {
+          // TODO Bloque 3: POST a Airtable /Maestros
+          await new Promise(r => setTimeout(r, 400));
+          this.setState({ enviado: true, cargando: false });
+        } catch (e) {
+          this.setState({ cargando: false, error: "Hubo un problema. Intenta de nuevo." });
+        }
+      },
+      postularDisabled: !valido || s.cargando,
+      postularLabel: s.cargando ? "Enviando…" : "Enviar postulación",
+      postularStyle: "border:none;border-radius:999px;padding:15px 30px;font:700 15.5px Inter,sans-serif;transition:background .18s ease;" + (valido && !s.cargando ? "background:#4169E1;color:#fff;cursor:pointer" : "background:#E4E5E7;color:#94A3B8;cursor:not-allowed"),
+      mostrarError: !!s.error,
+      error: s.error || "",
+      waLink: "https://wa.me/" + wa + "?text=" + encodeURIComponent("Hola JJS, quiero unirme como maestro"),
+    };
+  }
+}
+</script>
+</body>
+</html>

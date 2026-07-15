@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Pedir cotización — JJS</title>
+<meta name="description" content="Describe tu trabajo en 2 minutos y recibe hasta 3 cotizaciones de maestros verificados de tu comuna.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F8F7;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important}}
+</style>
+</helmet>
+
+<div style="font-family:Inter,system-ui,sans-serif;color:#0F172A;min-height:100vh;display:flex;flex-direction:column">
+
+  <!-- NAVBAR -->
+  <nav data-screen-label="Navbar" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #E4E5E7">
+    <div style="max-width:1120px;margin:0 auto;padding:0 20px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <a href="JJS Home.dc.html" style="font-family:Manrope,sans-serif;font-weight:800;font-size:24px;color:#0F172A;text-decoration:none;letter-spacing:-0.5px">JJS<span style="color:#4169E1">.</span></a>
+      <div style="display:flex;align-items:center;gap:20px;font-size:14.5px;font-weight:500">
+        <a href="JJS Maestros.dc.html" style="color:#586074;text-decoration:none" style-hover="color:#0F172A">Para maestros</a>
+        <a href="JJS Home.dc.html" style="color:#0F172A;text-decoration:none;font-weight:600" style-hover="color:#4169E1">← Volver al inicio</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PROGRESO -->
+  <sc-if value="{{ enCurso }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Barra de progreso" style="background:#fff;border-bottom:1px solid #E4E5E7">
+      <div style="max-width:640px;margin:0 auto;padding:18px 20px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#586074;margin-bottom:8px">
+          <span>Paso {{ pasoNum }} de 5</span><span>{{ pasoTitulo }}</span>
+        </div>
+        <div style="height:6px;border-radius:999px;background:#F6F8F7;overflow:hidden"><div style="{{ progressFill }}"></div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <main style="flex:1;width:100%;max-width:640px;margin:0 auto;padding:44px 20px 100px">
+
+    <!-- PASO 1: OFICIO -->
+    <sc-if value="{{ esPaso1 }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Paso 1 · Oficio">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-0.7px;margin:0 0 8px">¿Qué oficio necesitas?</h1>
+        <p style="color:#586074;font-size:15.5px;margin:0 0 28px">Elige el que más se acerque a tu problema.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+          <sc-for list="{{ oficios }}" as="of" hint-placeholder-count="6">
+            <button onClick="{{ of.pick }}" style="{{ of.cardStyle }}" style-hover="border-color:#4169E1">
+              <span style="width:40px;height:40px;border-radius:10px;background:#E8EFFB;display:inline-flex;align-items:center;justify-content:center;color:#2E4AB1;font-family:Manrope,sans-serif;font-weight:800;font-size:16px">{{ of.icon }}</span>
+              <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:15.5px;display:block;margin-top:10px">{{ of.nombre }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- PASO 2: DESCRIPCIÓN + FOTOS -->
+    <sc-if value="{{ esPaso2 }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Paso 2 · Descripción">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-0.7px;margin:0 0 8px">Describe el problema</h1>
+        <p style="color:#586074;font-size:15.5px;margin:0 0 24px">Mientras más detalles, mejores cotizaciones. Las fotos ayudan mucho.</p>
+        <textarea value="{{ descripcion }}" onChange="{{ setDescripcion }}" rows="5" placeholder="Ej: El calefón no enciende hace 2 días. Es un Splendid de 10 litros, a gas licuado…" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:16px;font:400 15px/1.6 Inter,sans-serif;color:#0F172A;background:#fff;outline:none;resize:vertical" style-focus="border-color:#4169E1"></textarea>
+        <div style="margin-top:16px">
+          <label style="display:flex;align-items:center;justify-content:center;gap:10px;border:2px dashed #E4E5E7;border-radius:12px;padding:22px;background:#fff;cursor:pointer;font-size:14.5px;font-weight:600;color:#586074;transition:border-color .18s ease" style-hover="border-color:#4169E1">
+            <span style="width:28px;height:28px;border-radius:50%;background:#E8EFFB;color:#2E4AB1;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">+</span>
+            Subir fotos (hasta 5)
+            <input type="file" accept="image/*" multiple onChange="{{ onFotos }}" style="display:none">
+          </label>
+          <sc-if value="{{ tieneFotos }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+              <sc-for list="{{ fotos }}" as="foto" hint-placeholder-count="2">
+                <div style="position:relative">
+                  <img src="{{ foto.url }}" alt="Foto del problema" style="width:84px;height:84px;object-fit:cover;border-radius:10px;border:1px solid #E4E5E7;display:block">
+                  <button onClick="{{ foto.quitar }}" aria-label="Quitar foto" style="position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;background:#0F172A;color:#fff;border:none;font-size:12px;cursor:pointer;line-height:1">×</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- PASO 3: DÓNDE -->
+    <sc-if value="{{ esPaso3 }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Paso 3 · Ubicación">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-0.7px;margin:0 0 8px">¿Dónde es el trabajo?</h1>
+        <p style="color:#586074;font-size:15.5px;margin:0 0 24px">Solo la comuna y una referencia. La dirección exacta se comparte al agendar.</p>
+        <div style="display:grid;gap:14px">
+          <select value="{{ comuna }}" onChange="{{ setComuna }}" aria-label="Comuna" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:500 15px Inter,sans-serif;color:#0F172A;background:#fff;outline:none;cursor:pointer" style-focus="border-color:#4169E1">
+            <option value="">Elige tu comuna</option>
+            <option value="Rancagua">Rancagua</option>
+            <option value="Machalí">Machalí</option>
+            <option value="Graneros">Graneros</option>
+            <option value="Olivar">Olivar</option>
+            <option value="Doñihue">Doñihue</option>
+          </select>
+          <input type="text" value="{{ direccion }}" onChange="{{ setDireccion }}" placeholder="Dirección aproximada o sector (ej: cerca del Estadio El Teniente)" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;color:#0F172A;background:#fff;outline:none" style-focus="border-color:#4169E1">
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- PASO 4: URGENCIA -->
+    <sc-if value="{{ esPaso4 }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Paso 4 · Urgencia">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-0.7px;margin:0 0 8px">¿Qué tan urgente es?</h1>
+        <p style="color:#586074;font-size:15.5px;margin:0 0 24px">Los maestros priorizan según esto.</p>
+        <div style="display:grid;gap:12px">
+          <sc-for list="{{ urgencias }}" as="u" hint-placeholder-count="3">
+            <button onClick="{{ u.pick }}" style="{{ u.cardStyle }}" style-hover="border-color:#4169E1">
+              <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:16px;display:block">{{ u.titulo }}</span>
+              <span style="font-size:13.5px;color:#586074;display:block;margin-top:4px">{{ u.detalle }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- PASO 5: DATOS -->
+    <sc-if value="{{ esPaso5 }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Paso 5 · Tus datos">
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-0.7px;margin:0 0 8px">Tus datos</h1>
+        <p style="color:#586074;font-size:15.5px;margin:0 0 24px">Las cotizaciones te llegan por WhatsApp. Sin spam, solo tus 3 cotizaciones.</p>
+        <div style="display:grid;gap:14px">
+          <input type="text" value="{{ nombre }}" onChange="{{ setNombre }}" placeholder="Tu nombre" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;background:#fff;outline:none" style-focus="border-color:#4169E1">
+          <input type="tel" value="{{ whatsapp }}" onChange="{{ setWhatsapp }}" placeholder="WhatsApp (+56 9 …)" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;background:#fff;outline:none" style-focus="border-color:#4169E1">
+          <input type="email" value="{{ email }}" onChange="{{ setEmail }}" placeholder="Email (opcional)" style="width:100%;border:1px solid #E4E5E7;border-radius:12px;padding:15px 16px;font:400 15px Inter,sans-serif;background:#fff;outline:none" style-focus="border-color:#4169E1">
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:13px;color:#586074;line-height:1.5">
+          <span style="width:18px;height:18px;border-radius:50%;background:#E8EFFB;color:#2E4AB1;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex:none;margin-top:1px">✓</span>
+          Tu número solo lo ven los maestros que te cotizan. Pago protegido hasta que quedes conforme.
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ÉXITO -->
+    <sc-if value="{{ enviado }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Éxito" style="text-align:center;padding-top:40px">
+        <div style="width:76px;height:76px;border-radius:50%;background:#E8EFFB;color:#4169E1;display:inline-flex;align-items:center;justify-content:center;font-size:34px;font-weight:800">✓</div>
+        <h1 style="font-family:Manrope,sans-serif;font-weight:800;font-size:clamp(26px,4vw,34px);letter-spacing:-0.7px;margin:24px 0 12px">¡Listo, {{ nombreCorto }}!</h1>
+        <p style="color:#586074;font-size:16.5px;line-height:1.6;margin:0 auto 32px;max-width:420px">Te llegarán <strong style="color:#0F172A">hasta 3 cotizaciones por WhatsApp</strong> en las próximas horas. Compara con calma y elige al que más te convenza.</p>
+        <div style="background:#fff;border:1px solid #E4E5E7;border-radius:16px;padding:22px;max-width:420px;margin:0 auto 32px;text-align:left">
+          <div style="font-size:12.5px;font-weight:700;color:#586074;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px">Resumen de tu pedido</div>
+          <div style="display:grid;gap:8px;font-size:14.5px">
+            <div style="display:flex;justify-content:space-between"><span style="color:#586074">Oficio</span><span style="font-weight:600">{{ resumenOficio }}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:#586074">Comuna</span><span style="font-weight:600">{{ comuna }}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:#586074">Urgencia</span><span style="font-weight:600">{{ resumenUrgencia }}</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:#586074">Fotos</span><span style="font-weight:600">{{ numFotos }}</span></div>
+          </div>
+        </div>
+        <a href="JJS Home.dc.html" style="display:inline-flex;background:#0F172A;color:#fff;text-decoration:none;border-radius:999px;padding:14px 30px;font:600 15px Inter,sans-serif;transition:background .18s ease" style-hover="background:#4169E1">Volver al inicio</a>
+      </section>
+    </sc-if>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <sc-if value="{{ mostrarNav }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:36px;gap:12px">
+        <button onClick="{{ atras }}" style="background:transparent;border:none;color:#586074;font:600 15px Inter,sans-serif;cursor:pointer;padding:12px 8px" style-hover="color:#0F172A">← Atrás</button>
+        <button onClick="{{ continuar }}" disabled="{{ continuarDisabled }}" style="{{ continuarStyle }}">{{ continuarLabel }}</button>
+      </div>
+      <sc-if value="{{ mostrarError }}" hint-placeholder-val="{{ false }}">
+        <p style="color:#EF4444;font-size:13.5px;text-align:center;margin:10px 0 0;line-height:1.5">{{ error }}</p>
+      </sc-if>
+    </sc-if>
+
+  </main>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="{{ waLink }}" target="_blank" aria-label="Escríbenos por WhatsApp" style="position:fixed;bottom:22px;right:22px;z-index:60;width:56px;height:56px;border-radius:50%;background:#4169E1;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(65,105,225,.4);text-decoration:none;transition:transform .18s ease" style-hover="transform:scale(1.08)">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 0 0-7.6 13.8L3 21l4.4-1.3A9 9 0 1 0 12 3z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="8.6" cy="12" r="1.1" fill="#fff"></circle><circle cx="12" cy="12" r="1.1" fill="#fff"></circle><circle cx="15.4" cy="12" r="1.1" fill="#fff"></circle></svg>
+  </a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;56912345678&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contacto&quot;,&quot;description&quot;:&quot;Número WhatsApp del canal de soporte (formato 569XXXXXXXX)&quot;}}">
+class Component extends DCLogic {
+  state = {
+    paso: 1, enviado: false, cargando: false, error: null,
+    oficio: "", descripcion: "", fotos: [],
+    comuna: "", direccion: "", urgencia: "",
+    nombre: "", whatsapp: "", email: ""
+  };
+
+  OFICIOS = [
+    { id: "gasfiteria", icon: "G", nombre: "Gasfitería" },
+    { id: "electricidad", icon: "E", nombre: "Electricidad" },
+    { id: "pintura", icon: "P", nombre: "Pintura" },
+    { id: "cerrajeria", icon: "C", nombre: "Cerrajería" },
+    { id: "carpinteria", icon: "K", nombre: "Carpintería" },
+    { id: "otro", icon: "+", nombre: "Otro oficio" },
+  ];
+  TITULOS = ["Oficio", "Descripción", "Ubicación", "Urgencia", "Tus datos"];
+  URGENCIAS = [
+    { id: "hoy", titulo: "Hoy", detalle: "Es una emergencia, necesito a alguien lo antes posible" },
+    { id: "semana", titulo: "Esta semana", detalle: "Me acomoda coordinar dentro de los próximos días" },
+    { id: "sinapuro", titulo: "Sin apuro", detalle: "Quiero comparar bien antes de decidir" },
+  ];
+
+  componentDidMount() {
+    const h = (window.location.hash || "").replace("#", "");
+    if (this.OFICIOS.some(o => o.id === h)) this.setState({ oficio: h, paso: 2 });
+  }
+
+  pickCard(selected) {
+    return "text-align:left;background:#fff;border:2px solid " + (selected ? "#4169E1" : "#E4E5E7") + ";border-radius:14px;padding:18px;cursor:pointer;font-family:Inter,sans-serif;transition:border-color .15s ease;width:100%;" + (selected ? "background:#E8EFFB;" : "");
+  }
+
+  valido() {
+    const s = this.state;
+    if (s.paso === 1) return !!s.oficio;
+    if (s.paso === 2) return s.descripcion.trim().length >= 10;
+    if (s.paso === 3) return !!s.comuna;
+    if (s.paso === 4) return !!s.urgencia;
+    if (s.paso === 5) {
+      const digits = s.whatsapp.replace(/\D/g, "");
+      const waOk = (digits.length === 9 && digits[0] === "9") || (digits.length === 11 && digits.startsWith("569"));
+      return s.nombre.trim().length >= 2 && waOk;
+    }
+    return false;
+  }
+
+  async enviar() {
+    const { fotos, cargando, error, ...lead } = this.state;
+    this.setState({ cargando: true, error: null });
+    try {
+      // TODO Bloque 3: POST a Airtable /Leads con lead + fotos
+      await new Promise(r => setTimeout(r, 400));
+      this.setState({ enviado: true, cargando: false });
+      window.scrollTo(0, 0);
+    } catch (e) {
+      this.setState({ cargando: false, error: "Hubo un problema al enviar. Intenta de nuevo." });
+    }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const wa = (this.props.whatsapp ?? "56912345678").replace(/\D/g, "");
+    const valido = this.valido();
+    const nomOficio = (this.OFICIOS.find(o => o.id === s.oficio) || {}).nombre || "—";
+    const nomUrgencia = (this.URGENCIAS.find(u => u.id === s.urgencia) || {}).titulo || "—";
+    return {
+      enCurso: !s.enviado,
+      enviado: s.enviado,
+      esPaso1: !s.enviado && s.paso === 1,
+      esPaso2: !s.enviado && s.paso === 2,
+      esPaso3: !s.enviado && s.paso === 3,
+      esPaso4: !s.enviado && s.paso === 4,
+      esPaso5: !s.enviado && s.paso === 5,
+      mostrarNav: !s.enviado && s.paso > 1,
+      pasoNum: s.paso,
+      pasoTitulo: this.TITULOS[s.paso - 1],
+      progressFill: "height:100%;border-radius:999px;background:#4169E1;transition:width .3s ease;width:" + (s.paso / 5) * 100 + "%",
+      oficios: this.OFICIOS.map(o => ({
+        ...o,
+        cardStyle: this.pickCard(s.oficio === o.id),
+        pick: () => this.setState({ oficio: o.id, paso: 2 }),
+      })),
+      urgencias: this.URGENCIAS.map(u => ({
+        ...u,
+        cardStyle: this.pickCard(s.urgencia === u.id),
+        pick: () => this.setState({ urgencia: u.id }),
+      })),
+      descripcion: s.descripcion,
+      setDescripcion: (e) => this.setState({ descripcion: e.target.value }),
+      comuna: s.comuna,
+      setComuna: (e) => this.setState({ comuna: e.target.value }),
+      direccion: s.direccion,
+      setDireccion: (e) => this.setState({ direccion: e.target.value }),
+      nombre: s.nombre,
+      setNombre: (e) => this.setState({ nombre: e.target.value }),
+      whatsapp: s.whatsapp,
+      setWhatsapp: (e) => this.setState({ whatsapp: e.target.value }),
+      email: s.email,
+      setEmail: (e) => this.setState({ email: e.target.value }),
+      onFotos: (e) => {
+        const nuevos = Array.from(e.target.files || []).slice(0, 5 - s.fotos.length)
+          .map(f => ({ url: URL.createObjectURL(f), name: f.name }));
+        this.setState({ fotos: [...s.fotos, ...nuevos].slice(0, 5) });
+        e.target.value = "";
+      },
+      tieneFotos: s.fotos.length > 0,
+      fotos: s.fotos.map((f, i) => ({
+        ...f,
+        quitar: () => this.setState({ fotos: this.state.fotos.filter((_, j) => j !== i) }),
+      })),
+      numFotos: String(s.fotos.length),
+      atras: () => this.setState({ paso: Math.max(1, s.paso - 1) }),
+      continuar: () => {
+        if (!valido || s.cargando) return;
+        if (s.paso === 5) this.enviar();
+        else { this.setState({ paso: s.paso + 1 }); window.scrollTo(0, 0); }
+      },
+      continuarDisabled: !valido || s.cargando,
+      continuarLabel: s.paso === 5 ? (s.cargando ? "Enviando…" : "Pedir 3 cotizaciones") : "Continuar →",
+      continuarStyle: "border:none;border-radius:999px;padding:14px 30px;font:600 15.5px Inter,sans-serif;transition:background .18s ease;" + (valido && !s.cargando ? "background:#4169E1;color:#fff;cursor:pointer" : "background:#E4E5E7;color:#94A3B8;cursor:not-allowed"),
+      mostrarError: !!s.error,
+      error: s.error || "",
+      nombreCorto: s.nombre.split(" ")[0] || "",
+      resumenOficio: nomOficio,
+      resumenUrgencia: nomUrgencia,
+      waLink: "https://wa.me/" + wa + "?text=" + encodeURIComponent("Hola JJS, tengo una duda con mi cotización"),
+    };
+  }
+}
+</script>
+</body>
+</html>
